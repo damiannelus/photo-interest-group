@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import {
+  addDoc,
   collection,
   onSnapshot,
   orderBy,
   query,
+  serverTimestamp,
   where,
 } from "firebase/firestore";
 import { db } from "~/firebase";
+import { useAuth } from "~/context/auth";
 import type { Challenge } from "~/types/challenge";
 import type { Submission } from "~/types/submission";
 
@@ -20,9 +23,49 @@ interface ChallengeCardProps {
 }
 
 function ChallengeCard({ challenge }: ChallengeCardProps) {
+  const { user } = useAuth();
+
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [subsLoading, setSubsLoading] = useState(true);
   const [subsError, setSubsError] = useState<string | null>(null);
+
+  const [formOpen, setFormOpen] = useState(false);
+  const [photoUrl, setPhotoUrl] = useState("");
+  const [reflection, setReflection] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
+  const canPublish =
+    photoUrl.trim().length > 0 &&
+    reflection.trim().length >= 50 &&
+    !submitting;
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!canPublish || !user) return;
+
+    setSubmitting(true);
+    setSubmitError(null);
+
+    try {
+      await addDoc(collection(db, "submissions"), {
+        challengeId: challenge.id,
+        photoUrl: photoUrl.trim(),
+        reflection: reflection.trim(),
+        authorUid: user.uid,
+        authorEmail: user.email ?? "",
+        createdAt: serverTimestamp(),
+        parent_submission_id: null,
+      });
+      setPhotoUrl("");
+      setReflection("");
+      setSubmitting(false);
+      setFormOpen(false);
+    } catch {
+      setSubmitError("Failed to publish. Please try again.");
+      setSubmitting(false);
+    }
+  }
 
   useEffect(() => {
     const q = query(
@@ -58,8 +101,95 @@ function ChallengeCard({ challenge }: ChallengeCardProps) {
         <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
           {challenge.title}
         </h2>
-        {/* TODO S-02: SubmitPhotoButton goes here */}
+        <button
+          type="button"
+          onClick={() => setFormOpen((v) => !v)}
+          className={
+            formOpen
+              ? "text-sm text-gray-500 dark:text-gray-400 hover:underline"
+              : "bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-3 py-1.5 rounded"
+          }
+        >
+          {formOpen ? "Cancel" : "Submit Photo"}
+        </button>
       </div>
+
+      {/* Inline submission form */}
+      {formOpen && (
+        <form
+          onSubmit={handleSubmit}
+          className="border-t border-gray-100 dark:border-gray-800 mt-4 pt-4 space-y-4"
+        >
+          {/* Photo URL field */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              Photo URL
+            </label>
+            <input
+              type="url"
+              value={photoUrl}
+              onChange={(e) => setPhotoUrl(e.target.value)}
+              placeholder="Paste a hosted image URL"
+              required
+              className="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            {photoUrl.trim().length > 0 && (
+              <img
+                src={photoUrl}
+                alt="Preview"
+                className="w-full max-h-48 object-cover rounded mt-2"
+              />
+            )}
+          </div>
+
+          {/* Reflection field */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              Reflection
+            </label>
+            <textarea
+              value={reflection}
+              onChange={(e) => setReflection(e.target.value)}
+              rows={4}
+              className="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <p
+              className={
+                reflection.length >= 50
+                  ? "text-sm text-green-600 dark:text-green-400"
+                  : "text-sm text-gray-400 dark:text-gray-500"
+              }
+            >
+              {reflection.length} / 50 characters
+            </p>
+          </div>
+
+          {/* Submit error */}
+          {submitError && (
+            <p className="text-sm text-red-600 dark:text-red-400">
+              {submitError}
+            </p>
+          )}
+
+          {/* Actions */}
+          <div className="flex items-center gap-4">
+            <button
+              type="submit"
+              disabled={!canPublish}
+              className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-medium px-4 py-2 rounded"
+            >
+              {submitting ? "Publishing…" : "Publish"}
+            </button>
+            <button
+              type="button"
+              onClick={() => setFormOpen(false)}
+              className="text-sm text-gray-500 dark:text-gray-400 hover:underline"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      )}
 
       {challenge.description && (
         <p className="text-gray-600 dark:text-gray-400 mb-4">
@@ -85,7 +215,6 @@ function ChallengeCard({ challenge }: ChallengeCardProps) {
             {submissions.length === 0 ? (
               <p className="text-sm text-gray-400 dark:text-gray-500 italic">
                 No submissions yet — be the first!
-                {/* TODO S-02: SubmitPhotoButton goes here */}
               </p>
             ) : (
               <ul>
