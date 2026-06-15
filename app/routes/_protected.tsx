@@ -1,11 +1,7 @@
 import { Navigate, Outlet } from "react-router";
 import RejectionScreen from "~/components/RejectionScreen";
 import { useAuth } from "~/context/auth";
-
-const allowedEmails = (import.meta.env.VITE_ALLOWED_EMAILS ?? "")
-  .split(",")
-  .map((e: string) => e.trim().toLowerCase())
-  .filter(Boolean);
+import { allowedEmails } from "~/lib/allowedEmails";
 
 export default function ProtectedLayout() {
   const { user, loading } = useAuth();

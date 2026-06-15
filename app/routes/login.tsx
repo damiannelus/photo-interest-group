@@ -4,11 +4,7 @@ import { useNavigate } from "react-router";
 import RejectionScreen from "~/components/RejectionScreen";
 import { useAuth } from "~/context/auth";
 import { auth } from "~/firebase";
-
-const allowedEmails = (import.meta.env.VITE_ALLOWED_EMAILS ?? "")
-  .split(",")
-  .map((e: string) => e.trim().toLowerCase())
-  .filter(Boolean);
+import { allowedEmails } from "~/lib/allowedEmails";
 
 export default function LoginPage() {
   const { user, loading } = useAuth();
@@ -17,6 +13,7 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    setRejected(false);
     if (!loading && user) {
       if (allowedEmails.includes(user.email?.toLowerCase() ?? "")) {
         navigate("/");
@@ -41,7 +38,11 @@ export default function LoginPage() {
       }
     } catch (err: unknown) {
       const code = (err as { code?: string }).code;
-      if (code !== "auth/popup-closed-by-user" && code !== "auth/cancelled-popup-request") {
+      if (code === "auth/popup-closed-by-user" || code === "auth/cancelled-popup-request") {
+        // user dismissed — no message needed
+      } else if (code === "auth/popup-blocked") {
+        setError("Your browser blocked the sign-in popup. Please allow popups for this site and try again.");
+      } else {
         setError("Sign-in failed. Please try again.");
       }
     }

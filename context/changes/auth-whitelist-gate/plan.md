@@ -263,8 +263,8 @@ Auth state resolution adds ~50–100 ms on first load before the protected route
 
 #### Manual
 
-- [ ] 1.3 Dev server starts without console errors
-- [ ] 1.4 `useAuth()` loading flag transitions true → false on load (confirmed in DevTools)
+- [x] 1.3 Dev server starts without console errors
+- [x] 1.4 `useAuth()` loading flag transitions true → false on load (confirmed in DevTools)
 
 ### Phase 2: Login Route + Rejection Screen
 
@@ -275,11 +275,11 @@ Auth state resolution adds ~50–100 ms on first load before the protected route
 
 #### Manual
 
-- [ ] 2.3 `/login` shows sign-in button
-- [ ] 2.4 Sign-in with whitelisted email navigates to `/`
-- [ ] 2.5 Sign-in with non-whitelisted email shows rejection screen
-- [ ] 2.6 Sign Out on rejection screen returns to `/login` with cleared session
-- [ ] 2.7 Revisiting `/login` while already signed in as whitelisted user redirects to `/`
+- [x] 2.3 `/login` shows sign-in button
+- [x] 2.4 Sign-in with whitelisted email navigates to `/`
+- [x] 2.5 Sign-in with non-whitelisted email shows rejection screen
+- [x] 2.6 Sign Out on rejection screen returns to `/login` with cleared session
+- [x] 2.7 Revisiting `/login` while already signed in as whitelisted user redirects to `/`
 
 ### Phase 3: Protected Layout Route
 
@@ -290,6 +290,6 @@ Auth state resolution adds ~50–100 ms on first load before the protected route
 
 #### Manual
 
-- [ ] 3.3 Visiting `/` while signed out redirects to `/login`
-- [ ] 3.4 Hard-refresh while signed in does not flash `/login`
-- [ ] 3.5 Private/incognito tab visiting `/` redirects to `/login`
+- [x] 3.3 Visiting `/` while signed out redirects to `/login`
+- [x] 3.4 Hard-refresh while signed in does not flash `/login`
+- [x] 3.5 Private/incognito tab visiting `/` redirects to `/login`
