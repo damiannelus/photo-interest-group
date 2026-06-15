@@ -264,31 +264,31 @@ Replaces the flat `submissions.map(...)` render in `ChallengeCard` with a recurs
 
 #### Automated
 
-- [x] 2.1 TypeScript type-check passes: `npm run typecheck`
-- [x] 2.2 No lint errors: `npm run lint`
+- [x] 2.1 TypeScript type-check passes: `npm run typecheck` — d1be996
+- [x] 2.2 No lint errors: `npm run lint` — d1be996
 
 #### Manual
 
-- [x] 2.3 Follow-Up button opens inline form; comment section closes if open
-- [x] 2.4 Parent context block shows correct thumbnail, author, and truncated reflection
-- [x] 2.5 Whitespace-only reflection: counter "0 / 50", button disabled
-- [x] 2.6 Valid follow-up submit creates Firestore doc with correct `parent_submission_id` and `challengeId`
-- [x] 2.7 HTTP URL rejected with error message; no Firestore write
-- [x] 2.8 After publish: form closes, fields clear
+- [x] 2.3 Follow-Up button opens inline form; comment section closes if open — d1be996
+- [x] 2.4 Parent context block shows correct thumbnail, author, and truncated reflection — d1be996
+- [x] 2.5 Whitespace-only reflection: counter "0 / 50", button disabled — d1be996
+- [x] 2.6 Valid follow-up submit creates Firestore doc with correct `parent_submission_id` and `challengeId` — d1be996
+- [x] 2.7 HTTP URL rejected with error message; no Firestore write — d1be996
+- [x] 2.8 After publish: form closes, fields clear — d1be996
 
 ### Phase 3: Chain Tree Rendering
 
 #### Automated
 
-- [ ] 3.1 TypeScript type-check passes: `npm run typecheck`
-- [ ] 3.2 No lint errors: `npm run lint`
+- [x] 3.1 TypeScript type-check passes: `npm run typecheck`
+- [x] 3.2 No lint errors: `npm run lint`
 
 #### Manual
 
-- [ ] 3.3 Root submissions appear in feed in descending order
-- [ ] 3.4 Follow-up appears indented under its parent with left-border connector
-- [ ] 3.5 Depth-2 follow-up renders indented under its own parent
-- [ ] 3.6 Depth 4+ renders at same visual indentation as depth 3
-- [ ] 3.7 No submissions lost — visible count matches Firestore total
-- [ ] 3.8 Pre-feature documents (no `parent_submission_id`) render as roots
-- [ ] 3.9 Feed renders correctly at 375px viewport width
+- [x] 3.3 Root submissions appear in feed in descending order
+- [x] 3.4 Follow-up appears indented under its parent with left-border connector
+- [x] 3.5 Depth-2 follow-up renders indented under its own parent
+- [x] 3.6 Depth 4+ renders at same visual indentation as depth 3
+- [x] 3.7 No submissions lost — visible count matches Firestore total
+- [x] 3.8 Pre-feature documents (no `parent_submission_id`) render as roots
+- [x] 3.9 Feed renders correctly at 375px viewport width

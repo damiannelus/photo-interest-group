@@ -157,7 +157,7 @@ function SubmissionCard({ submission }: { submission: Submission }) {
   }
 
   return (
-    <li className="flex flex-col gap-2 py-3 border-t border-gray-100 dark:border-gray-800">
+    <div className="flex flex-col gap-2 py-3 border-t border-gray-100 dark:border-gray-800">
       {/* Submission display */}
       <div className="flex gap-3">
         <img
@@ -367,7 +367,53 @@ function SubmissionCard({ submission }: { submission: Submission }) {
           </form>
         </div>
       )}
-    </li>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// buildSubmissionTree / SubmissionList — tree renderer helpers
+// ---------------------------------------------------------------------------
+
+function buildSubmissionTree(submissions: Submission[]): Map<string | null, Submission[]> {
+  const map = new Map<string | null, Submission[]>();
+  for (const s of submissions) {
+    const key = s.parent_submission_id ?? null;
+    if (!map.has(key)) map.set(key, []);
+    map.get(key)!.push(s);
+  }
+  for (const [key, group] of map) {
+    if (key !== null) {
+      group.sort((a, b) => (a.createdAt?.toMillis() ?? 0) - (b.createdAt?.toMillis() ?? 0));
+    }
+  }
+  return map;
+}
+
+function SubmissionList({
+  parentId,
+  byParent,
+  depth,
+}: {
+  parentId: string | null;
+  byParent: Map<string | null, Submission[]>;
+  depth: number;
+}) {
+  const group = byParent.get(parentId);
+  if (!group || group.length === 0) return null;
+  return (
+    <div className={depth > 0 ? "ml-4 pl-4 border-l-2 border-gray-100 dark:border-gray-800" : undefined}>
+      {group.map((sub) => (
+        <div key={sub.id}>
+          <SubmissionCard submission={sub} />
+          <SubmissionList
+            parentId={sub.id}
+            byParent={byParent}
+            depth={Math.min(depth + 1, 3)}
+          />
+        </div>
+      ))}
+    </div>
   );
 }
 
@@ -587,11 +633,11 @@ function ChallengeCard({ challenge }: ChallengeCardProps) {
                 No submissions yet — be the first!
               </p>
             ) : (
-              <ul>
-                {submissions.map((sub) => (
-                  <SubmissionCard key={sub.id} submission={sub} />
-                ))}
-              </ul>
+              <SubmissionList
+                parentId={null}
+                byParent={buildSubmissionTree(submissions)}
+                depth={0}
+              />
             )}
           </>
         )}
