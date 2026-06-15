@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router";
 import {
   addDoc,
@@ -42,7 +42,7 @@ function SubmissionCard({ submission }: { submission: Submission }) {
   const [fuError, setFuError] = useState<string | null>(null);
 
   const canPost = commentText.trim().length >= 10 && !submitting;
-  const canFollowUp = fuPhotoUrl.trim().length > 0 && fuReflection.trim().length >= 50 && !fuSubmitting;
+  const canFollowUp = !!user && fuPhotoUrl.trim().length > 0 && fuReflection.trim().length >= 50 && !fuSubmitting;
 
   // Fetch initial count on mount so the badge is populated before expanding
   useEffect(() => {
@@ -233,7 +233,7 @@ function SubmissionCard({ submission }: { submission: Submission }) {
                 placeholder="Paste a hosted HTTPS image URL"
                 className="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
               />
-              {fuPhotoUrl.trim().length > 0 && (
+              {fuPhotoUrl.trim().startsWith("https://") && (
                 <img
                   src={fuPhotoUrl}
                   alt="Preview"
@@ -382,6 +382,8 @@ function buildSubmissionTree(submissions: Submission[]): Map<string | null, Subm
     if (!map.has(key)) map.set(key, []);
     map.get(key)!.push(s);
   }
+  // Root submissions (key === null) keep Firestore query order (desc by createdAt).
+  // Child groups are sorted asc so follow-up chains read chronologically.
   for (const [key, group] of map) {
     if (key !== null) {
       group.sort((a, b) => (a.createdAt?.toMillis() ?? 0) - (b.createdAt?.toMillis() ?? 0));
@@ -399,6 +401,7 @@ function SubmissionList({
   byParent: Map<string | null, Submission[]>;
   depth: number;
 }) {
+  if (depth > 3) return null;
   const group = byParent.get(parentId);
   if (!group || group.length === 0) return null;
   return (
@@ -409,7 +412,7 @@ function SubmissionList({
           <SubmissionList
             parentId={sub.id}
             byParent={byParent}
-            depth={Math.min(depth + 1, 3)}
+            depth={depth + 1}
           />
         </div>
       ))}
@@ -433,6 +436,8 @@ function ChallengeCard({ challenge }: ChallengeCardProps) {
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [subsLoading, setSubsLoading] = useState(true);
   const [subsError, setSubsError] = useState<string | null>(null);
+  const subTree = useMemo(() => buildSubmissionTree(submissions), [submissions]);
+  const rootCount = submissions.filter((s) => (s.parent_submission_id ?? null) === null).length;
 
   const [formOpen, setFormOpen] = useState(false);
   const [photoUrl, setPhotoUrl] = useState("");
@@ -476,6 +481,7 @@ function ChallengeCard({ challenge }: ChallengeCardProps) {
       setPhotoUrl("");
       setReflection("");
       setFormOpen(false);
+      setSubmitting(false);
     } catch (err) {
       console.error("Submission failed:", err);
       setSubmitError("Failed to publish. Please try again.");
@@ -549,7 +555,7 @@ function ChallengeCard({ challenge }: ChallengeCardProps) {
               required
               className="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            {photoUrl.trim().length > 0 && (
+            {photoUrl.trim().startsWith("https://") && (
               <img
                 src={photoUrl}
                 alt="Preview"
@@ -624,8 +630,8 @@ function ChallengeCard({ challenge }: ChallengeCardProps) {
         ) : (
           <>
             <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">
-              {submissions.length} submission
-              {submissions.length !== 1 ? "s" : ""}
+              {rootCount} submission
+              {rootCount !== 1 ? "s" : ""}
             </p>
 
             {submissions.length === 0 ? (
@@ -635,7 +641,7 @@ function ChallengeCard({ challenge }: ChallengeCardProps) {
             ) : (
               <SubmissionList
                 parentId={null}
-                byParent={buildSubmissionTree(submissions)}
+                byParent={subTree}
                 depth={0}
               />
             )}
