@@ -343,15 +343,15 @@ No data migration. No schema changes. The `/submissions/{id}/comments` subcollec
 
 #### Automated
 
-- [x] 3.1 `npm run typecheck` exits 0
-- [x] 3.2 `npm run build` exits 0
+- [x] 3.1 `npm run typecheck` exits 0 — 775766b
+- [x] 3.2 `npm run build` exits 0 — 775766b
 
 #### Manual
 
-- [x] 3.3 Loading indicator appears briefly on first expand then transitions to comment list
-- [x] 3.4 Empty state "No comments yet — be the first to respond." shown when no comments
-- [x] 3.5 Character counter turns green at exactly 10 chars
-- [x] 3.6 Delete button visible only on own comments; click removes comment and updates count
-- [x] 3.7 Dark mode styles correct on all comment section elements
-- [x] 3.8 Comment section readable and usable at 375px mobile width
-- [x] 3.9 No regressions in submission display or submission form
+- [x] 3.3 Loading indicator appears briefly on first expand then transitions to comment list — 775766b
+- [x] 3.4 Empty state "No comments yet — be the first to respond." shown when no comments — 775766b
+- [x] 3.5 Character counter turns green at exactly 10 chars — 775766b
+- [x] 3.6 Delete button visible only on own comments; click removes comment and updates count — 775766b
+- [x] 3.7 Dark mode styles correct on all comment section elements — 775766b
+- [x] 3.8 Comment section readable and usable at 375px mobile width — 775766b
+- [x] 3.9 No regressions in submission display or submission form — 775766b
