@@ -280,15 +280,15 @@ Replaces the flat `submissions.map(...)` render in `ChallengeCard` with a recurs
 
 #### Automated
 
-- [x] 3.1 TypeScript type-check passes: `npm run typecheck`
-- [x] 3.2 No lint errors: `npm run lint`
+- [x] 3.1 TypeScript type-check passes: `npm run typecheck` — b6e8460
+- [x] 3.2 No lint errors: `npm run lint` — b6e8460
 
 #### Manual
 
-- [x] 3.3 Root submissions appear in feed in descending order
-- [x] 3.4 Follow-up appears indented under its parent with left-border connector
-- [x] 3.5 Depth-2 follow-up renders indented under its own parent
-- [x] 3.6 Depth 4+ renders at same visual indentation as depth 3
-- [x] 3.7 No submissions lost — visible count matches Firestore total
-- [x] 3.8 Pre-feature documents (no `parent_submission_id`) render as roots
-- [x] 3.9 Feed renders correctly at 375px viewport width
+- [x] 3.3 Root submissions appear in feed in descending order — b6e8460
+- [x] 3.4 Follow-up appears indented under its parent with left-border connector — b6e8460
+- [x] 3.5 Depth-2 follow-up renders indented under its own parent — b6e8460
+- [x] 3.6 Depth 4+ renders at same visual indentation as depth 3 — b6e8460
+- [x] 3.7 No submissions lost — visible count matches Firestore total — b6e8460
+- [x] 3.8 Pre-feature documents (no `parent_submission_id`) render as roots — b6e8460
+- [x] 3.9 Feed renders correctly at 375px viewport width — b6e8460
