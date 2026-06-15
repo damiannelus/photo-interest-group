@@ -374,15 +374,15 @@ No existing data or users to migrate. The only "rollback" concern is the `fireba
 
 #### Automated
 
-- [x] 2.1 `firebase serve` serves app at `localhost:5000` without errors
+- [x] 2.1 `firebase serve` serves app at `localhost:5000` without errors — bae0edb
 
 #### Manual
 
-- [x] 2.2 `firebase deploy --only hosting` exits 0 and prints Hosting URL
-- [x] 2.3 Hosting URL loads the welcome page in a browser
-- [x] 2.4 Firebase Console → Hosting shows a release in Release History
-- [x] 2.5 Firebase Console → Billing shows Blaze plan active
-- [x] 2.6 GCP Console → Billing → Budgets shows the $5 alert configured
+- [x] 2.2 `firebase deploy --only hosting` exits 0 and prints Hosting URL — bae0edb
+- [x] 2.3 Hosting URL loads the welcome page in a browser — bae0edb
+- [x] 2.4 Firebase Console → Hosting shows a release in Release History — bae0edb
+- [x] 2.5 Firebase Console → Billing shows Blaze plan active — bae0edb
+- [x] 2.6 GCP Console → Billing → Budgets shows the $5 alert configured — bae0edb
 
 ### Phase 3: GitHub Actions CI/CD + IAM Hardening
 
