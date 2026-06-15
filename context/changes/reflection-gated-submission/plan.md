@@ -270,30 +270,30 @@ No data migration. The `submissions` collection is already live (created in F-03
 
 #### Automated
 
-- [x] 1.1 `npm run typecheck` exits 0
-- [x] 1.2 `npm run build` exits 0
+- [x] 1.1 `npm run typecheck` exits 0 — 2a19925
+- [x] 1.2 `npm run build` exits 0 — 2a19925
 
 #### Manual
 
-- [ ] 1.3 "Submit Photo" button on card header toggles inline form open/closed
-- [ ] 1.4 "Publish" disabled with empty URL or <50-char reflection
-- [ ] 1.5 Pasting a valid image URL shows photo preview below input
-- [ ] 1.6 "Publish" enabled once URL is non-empty AND reflection ≥ 50 chars
-- [ ] 1.7 Submitting writes to Firestore and new submission appears in feed without page refresh
-- [ ] 1.8 "Cancel" collapses form without submitting
+- [x] 1.3 "Submit Photo" button on card header toggles inline form open/closed
+- [x] 1.4 "Publish" disabled with empty URL or <50-char reflection
+- [x] 1.5 Pasting a valid image URL shows photo preview below input
+- [x] 1.6 "Publish" enabled once URL is non-empty AND reflection ≥ 50 chars
+- [x] 1.7 Submitting writes to Firestore and new submission appears in feed without page refresh
+- [x] 1.8 "Cancel" collapses form without submitting
 
 ### Phase 2: Polish + Error States
 
 #### Automated
 
-- [ ] 2.1 `npm run typecheck` exits 0
-- [ ] 2.2 `npm run build` exits 0
+- [x] 2.1 `npm run typecheck` exits 0
+- [x] 2.2 `npm run build` exits 0
 
 #### Manual
 
-- [ ] 2.3 Character counter turns green at exactly 50 chars
-- [ ] 2.4 "Publishing…" label shown during write; button un-clickable
-- [ ] 2.5 Dark mode styles correct on all form inputs and buttons
-- [ ] 2.6 Form readable and usable at 375px mobile width
-- [ ] 2.7 Submit error message shown on Firestore write failure
-- [ ] 2.8 Server-side gate test: direct `addDoc` with <50-char reflection throws permission denied
+- [x] 2.3 Character counter turns green at exactly 50 chars
+- [x] 2.4 "Publishing…" label shown during write; button un-clickable
+- [x] 2.5 Dark mode styles correct on all form inputs and buttons
+- [x] 2.6 Form readable and usable at 375px mobile width
+- [x] 2.7 Submit error message shown on Firestore write failure
+- [x] 2.8 Server-side gate test: direct `addDoc` with <50-char reflection throws permission denied
