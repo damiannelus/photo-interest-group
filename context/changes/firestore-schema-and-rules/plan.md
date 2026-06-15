@@ -298,12 +298,12 @@ No existing data. The `members` collection is the bootstrapping dependency — i
 
 #### Automated
 
-- [x] 2.1 `firebase deploy --only firestore:rules` exits 0
+- [x] 2.1 `firebase deploy --only firestore:rules` exits 0 — a9ed9b7
 
 #### Manual
 
-- [x] 2.2 Whitelisted sign-in produces no permission-denied errors in console
-- [x] 2.3 Direct Firestore read without auth throws permission denied
-- [x] 2.4 Submission write with <50 char reflection throws permission denied
-- [x] 2.5 /members/{your-email} document exists in Firestore Console
-- [x] 2.6 Seed challenge document exists in /challenges with all required fields
+- [x] 2.2 Whitelisted sign-in produces no permission-denied errors in console — a9ed9b7
+- [x] 2.3 Direct Firestore read without auth throws permission denied — a9ed9b7
+- [x] 2.4 Submission write with <50 char reflection throws permission denied — a9ed9b7
+- [x] 2.5 /members/{your-email} document exists in Firestore Console — a9ed9b7
+- [x] 2.6 Seed challenge document exists in /challenges with all required fields — a9ed9b7
