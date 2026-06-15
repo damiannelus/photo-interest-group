@@ -1,6 +1,6 @@
 ---
 change_id: auth-whitelist-gate
-status: implementing
+status: implemented
 created: 2026-06-15
 updated: 2026-06-15
 

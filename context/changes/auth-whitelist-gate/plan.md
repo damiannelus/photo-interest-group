@@ -285,8 +285,8 @@ Auth state resolution adds ~50–100 ms on first load before the protected route
 
 #### Automated
 
-- [x] 3.1 `npm run typecheck` exits 0
-- [x] 3.2 `npm run build` exits 0
+- [x] 3.1 `npm run typecheck` exits 0 — 4f83ca7
+- [x] 3.2 `npm run build` exits 0 — 4f83ca7
 
 #### Manual
 
