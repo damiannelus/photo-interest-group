@@ -273,6 +273,7 @@ function ChallengeCard({ challenge }: ChallengeCardProps) {
         authorUid: user.uid,
         authorEmail: user.email ?? "",
         createdAt: serverTimestamp(),
+        parent_submission_id: null,
       });
       if (!mountedRef.current) return;
       setPhotoUrl("");
@@ -373,12 +374,12 @@ function ChallengeCard({ challenge }: ChallengeCardProps) {
             />
             <p
               className={
-                reflection.length >= 50
+                reflection.trim().length >= 50
                   ? "text-sm text-green-600 dark:text-green-400"
                   : "text-sm text-gray-400 dark:text-gray-500"
               }
             >
-              {reflection.length} / 50 characters
+              {reflection.trim().length} / 50 characters
             </p>
           </div>
 

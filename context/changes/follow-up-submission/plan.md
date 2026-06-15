@@ -252,13 +252,13 @@ Replaces the flat `submissions.map(...)` render in `ChallengeCard` with a recurs
 
 #### Automated
 
-- [ ] 1.1 TypeScript type-check passes: `npm run typecheck`
-- [ ] 1.2 No lint errors: `npm run lint`
+- [x] 1.1 TypeScript type-check passes: `npm run typecheck`
+- [x] 1.2 No lint errors: `npm run lint`
 
 #### Manual
 
-- [ ] 1.3 Whitespace in reflection field shows "0 / 50" and stays gray; Publish stays disabled
-- [ ] 1.4 Root submission Firestore document has `parent_submission_id: null`
+- [x] 1.3 Whitespace in reflection field shows "0 / 50" and stays gray; Publish stays disabled
+- [x] 1.4 Root submission Firestore document has `parent_submission_id: null`
 
 ### Phase 2: Follow-Up Button and Form in SubmissionCard
 
