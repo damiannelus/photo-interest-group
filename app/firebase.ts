@@ -9,4 +9,11 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
+const missing = Object.entries(firebaseConfig)
+  .filter(([, v]) => !v)
+  .map(([k]) => k);
+if (missing.length) {
+  throw new Error(`Missing Firebase config: ${missing.join(", ")}`);
+}
+
 export const app = initializeApp(firebaseConfig);
