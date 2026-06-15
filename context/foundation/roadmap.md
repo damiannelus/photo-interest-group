@@ -31,7 +31,7 @@ Photo-sharing platforms make self-reflection optional; this one makes it mandato
 | ----- | --------------------------- | ----------------------------------------------------------------------------------------- | ------------- | -------------------------------- | -------- |
 | F-01  | firebase-deploy-scaffold    | (foundation) Firebase SDK initialized; firebase.json + CI/CD wired                        | —             | FR-001, FR-002, NFR: unauth      | done     |
 | F-02  | auth-whitelist-gate         | (foundation) Google Sign-In live; whitelist gate active; all routes guarded               | F-01          | FR-001, FR-002                   | done     |
-| F-03  | firestore-schema-and-rules  | (foundation) Firestore collections defined; security rules enforce whitelist               | F-01          | FR-004–012, NFR: unauth          | proposed |
+| F-03  | firestore-schema-and-rules  | (foundation) Firestore collections defined; security rules enforce whitelist               | F-01          | FR-004–012, NFR: unauth          | done     |
 | S-01  | challenge-submission-feed   | view active challenges and their submissions in the main feed                             | F-02, F-03    | FR-004, FR-008                   | proposed |
 | S-05  | challenge-creation          | create a new challenge with a title and description                                       | F-02, F-03    | FR-005                           | proposed |
 | S-02  | reflection-gated-submission | submit a photo (URL) to a challenge with a 50-char reflection; see it in the feed immediately | S-01      | FR-006, FR-007, FR-008, US-01    | proposed |
@@ -99,7 +99,7 @@ What's already in place in the codebase as of 2026-06-14 (auto-researched + user
 - **Blockers:** —
 - **Unknowns:** —
 - **Risk:** Firestore security rules are the sole server-side enforcement of all data-access NFRs in a static-export SPA (no server middleware to intercept requests); getting them wrong leaves data readable by anyone with the Firebase project URL even if the UI is correct. Sequenced as a foundation — not buried in a slice — for this reason.
-- **Status:** proposed
+- **Status:** done
 
 ## Slices
 
@@ -193,3 +193,4 @@ What's already in place in the codebase as of 2026-06-14 (auto-researched + user
 
 - **F-01: (foundation) Firebase SDK initialized; firebase.json + CI/CD wired** — Archived 2026-06-15 → `context/archive/2026-06-14-firebase-deploy-scaffold/`. Lesson: —.
 - **F-02: (foundation) Google Sign-In live; whitelist gate active; all routes guarded** — Archived 2026-06-15 → `context/archive/2026-06-15-auth-whitelist-gate/`. Lesson: —.
+- **F-03: (foundation) Firestore collections defined (challenges, submissions, comments); security rules enforce that only authenticated, whitelisted users can read or write any document; one seed challenge present for downstream slice testing.** — Archived 2026-06-15 → `context/archive/2026-06-15-firestore-schema-and-rules/`. Lesson: —.
