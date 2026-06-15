@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router";
 import {
   collection,
   onSnapshot,
@@ -129,6 +130,7 @@ export default function ChallengeFeed() {
   useEffect(() => {
     const q = query(
       collection(db, "challenges"),
+      where("status", "==", "active"),
       orderBy("createdAt", "desc")
     );
 
@@ -159,7 +161,12 @@ export default function ChallengeFeed() {
         <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
           Active Challenges
         </h1>
-        {/* TODO S-05: CreateChallengeButton goes here */}
+        <Link
+          to="/challenges/new"
+          className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded"
+        >
+          + New Challenge
+        </Link>
       </div>
 
       {/* Feed body */}
@@ -174,7 +181,12 @@ export default function ChallengeFeed() {
           <p className="text-gray-500 dark:text-gray-400">
             No active challenges yet.
           </p>
-          {/* TODO S-05: CreateChallengeButton goes here */}
+          <Link
+            to="/challenges/new"
+            className="mt-4 inline-block bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded"
+          >
+            + New Challenge
+          </Link>
         </div>
       ) : (
         challenges.map((challenge) => (

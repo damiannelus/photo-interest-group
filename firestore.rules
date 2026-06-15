@@ -10,7 +10,7 @@ service cloud.firestore {
 
     match /challenges/{challengeId} {
       allow read: if isWhitelisted();
-      allow create: if isWhitelisted();
+      allow create: if isWhitelisted() && request.resource.data.status == "active";
       allow update: if isWhitelisted() &&
                       request.auth.uid == resource.data.createdBy &&
                       request.resource.data.createdBy == resource.data.createdBy;
