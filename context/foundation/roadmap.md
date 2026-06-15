@@ -32,7 +32,7 @@ Photo-sharing platforms make self-reflection optional; this one makes it mandato
 | F-01  | firebase-deploy-scaffold    | (foundation) Firebase SDK initialized; firebase.json + CI/CD wired                        | —             | FR-001, FR-002, NFR: unauth      | done     |
 | F-02  | auth-whitelist-gate         | (foundation) Google Sign-In live; whitelist gate active; all routes guarded               | F-01          | FR-001, FR-002                   | done     |
 | F-03  | firestore-schema-and-rules  | (foundation) Firestore collections defined; security rules enforce whitelist               | F-01          | FR-004–012, NFR: unauth          | done     |
-| S-01  | challenge-submission-feed   | view active challenges and their submissions in the main feed                             | F-02, F-03    | FR-004, FR-008                   | proposed |
+| S-01  | challenge-submission-feed   | view active challenges and their submissions in the main feed                             | F-02, F-03    | FR-004, FR-008                   | done     |
 | S-05  | challenge-creation          | create a new challenge with a title and description                                       | F-02, F-03    | FR-005                           | proposed |
 | S-02  | reflection-gated-submission | submit a photo (URL) to a challenge with a 50-char reflection; see it in the feed immediately | S-01      | FR-006, FR-007, FR-008, US-01    | proposed |
 | S-03  | follow-up-submission        | initiate a follow-up from an existing submission; parent context pre-filled; parent ID stored | S-02      | FR-009, FR-010                   | proposed |
@@ -113,7 +113,7 @@ What's already in place in the codebase as of 2026-06-14 (auto-researched + user
 - **Blockers:** —
 - **Unknowns:** —
 - **Risk:** Sequenced before S-02 (submission) because the submission form opens from within a challenge context (step 3 of the 7-step Success Criteria flow); a seed challenge from F-03 makes this slice testable without S-05 (create challenge) being complete.
-- **Status:** proposed
+- **Status:** done
 
 ### S-05: Challenge creation
 
@@ -194,3 +194,4 @@ What's already in place in the codebase as of 2026-06-14 (auto-researched + user
 - **F-01: (foundation) Firebase SDK initialized; firebase.json + CI/CD wired** — Archived 2026-06-15 → `context/archive/2026-06-14-firebase-deploy-scaffold/`. Lesson: —.
 - **F-02: (foundation) Google Sign-In live; whitelist gate active; all routes guarded** — Archived 2026-06-15 → `context/archive/2026-06-15-auth-whitelist-gate/`. Lesson: —.
 - **F-03: (foundation) Firestore collections defined (challenges, submissions, comments); security rules enforce that only authenticated, whitelisted users can read or write any document; one seed challenge present for downstream slice testing.** — Archived 2026-06-15 → `context/archive/2026-06-15-firestore-schema-and-rules/`. Lesson: —.
+- **S-01: view active challenges and their submissions in the main feed** — Archived 2026-06-15 → `context/archive/2026-06-15-challenge-submission-feed/`. Lesson: —.

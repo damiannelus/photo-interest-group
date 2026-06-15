@@ -1,10 +1,10 @@
 ---
 change_id: challenge-submission-feed
 title: Challenge and submission feed read view (S-01)
-status: implementing
+status: archived
 created: 2026-06-15
 updated: 2026-06-15
-archived_at: null
+archived_at: 2026-06-15T11:55:58Z
 ---
 
 ## Notes
