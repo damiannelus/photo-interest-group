@@ -327,31 +327,31 @@ No data migration. No schema changes. The `/submissions/{id}/comments` subcollec
 
 #### Automated
 
-- [x] 2.1 `npm run typecheck` exits 0
-- [x] 2.2 `npm run build` exits 0
+- [x] 2.1 `npm run typecheck` exits 0 — b6e6894
+- [x] 2.2 `npm run build` exits 0 — b6e6894
 
 #### Manual
 
-- [x] 2.3 Submission cards show "Comments (0)" toggle button below each submission
-- [x] 2.4 Toggle expands comment section; "Post" disabled with <10 chars; enabled at ≥10
-- [x] 2.5 Posting a comment writes to Firestore and appears in the list without page refresh
-- [x] 2.6 Comment count in toggle button updates after posting
-- [x] 2.7 Real-time: comment posted in one tab appears in another without refresh
-- [x] 2.8 Collapsing and reopening the toggle works; existing submission display unchanged
+- [x] 2.3 Submission cards show "Comments (0)" toggle button below each submission — b6e6894
+- [x] 2.4 Toggle expands comment section; "Post" disabled with <10 chars; enabled at ≥10 — b6e6894
+- [x] 2.5 Posting a comment writes to Firestore and appears in the list without page refresh — b6e6894
+- [x] 2.6 Comment count in toggle button updates after posting — b6e6894
+- [x] 2.7 Real-time: comment posted in one tab appears in another without refresh — b6e6894
+- [x] 2.8 Collapsing and reopening the toggle works; existing submission display unchanged — b6e6894
 
 ### Phase 3: Polish + Error States
 
 #### Automated
 
-- [ ] 3.1 `npm run typecheck` exits 0
-- [ ] 3.2 `npm run build` exits 0
+- [x] 3.1 `npm run typecheck` exits 0
+- [x] 3.2 `npm run build` exits 0
 
 #### Manual
 
-- [ ] 3.3 Loading indicator appears briefly on first expand then transitions to comment list
-- [ ] 3.4 Empty state "No comments yet — be the first to respond." shown when no comments
-- [ ] 3.5 Character counter turns green at exactly 10 chars
-- [ ] 3.6 Delete button visible only on own comments; click removes comment and updates count
-- [ ] 3.7 Dark mode styles correct on all comment section elements
-- [ ] 3.8 Comment section readable and usable at 375px mobile width
-- [ ] 3.9 No regressions in submission display or submission form
+- [x] 3.3 Loading indicator appears briefly on first expand then transitions to comment list
+- [x] 3.4 Empty state "No comments yet — be the first to respond." shown when no comments
+- [x] 3.5 Character counter turns green at exactly 10 chars
+- [x] 3.6 Delete button visible only on own comments; click removes comment and updates count
+- [x] 3.7 Dark mode styles correct on all comment section elements
+- [x] 3.8 Comment section readable and usable at 375px mobile width
+- [x] 3.9 No regressions in submission display or submission form
