@@ -252,29 +252,29 @@ Replaces the flat `submissions.map(...)` render in `ChallengeCard` with a recurs
 
 #### Automated
 
-- [x] 1.1 TypeScript type-check passes: `npm run typecheck`
-- [x] 1.2 No lint errors: `npm run lint`
+- [x] 1.1 TypeScript type-check passes: `npm run typecheck` — 0212e97
+- [x] 1.2 No lint errors: `npm run lint` — 0212e97
 
 #### Manual
 
-- [x] 1.3 Whitespace in reflection field shows "0 / 50" and stays gray; Publish stays disabled
-- [x] 1.4 Root submission Firestore document has `parent_submission_id: null`
+- [x] 1.3 Whitespace in reflection field shows "0 / 50" and stays gray; Publish stays disabled — 0212e97
+- [x] 1.4 Root submission Firestore document has `parent_submission_id: null` — 0212e97
 
 ### Phase 2: Follow-Up Button and Form in SubmissionCard
 
 #### Automated
 
-- [ ] 2.1 TypeScript type-check passes: `npm run typecheck`
-- [ ] 2.2 No lint errors: `npm run lint`
+- [x] 2.1 TypeScript type-check passes: `npm run typecheck`
+- [x] 2.2 No lint errors: `npm run lint`
 
 #### Manual
 
-- [ ] 2.3 Follow-Up button opens inline form; comment section closes if open
-- [ ] 2.4 Parent context block shows correct thumbnail, author, and truncated reflection
-- [ ] 2.5 Whitespace-only reflection: counter "0 / 50", button disabled
-- [ ] 2.6 Valid follow-up submit creates Firestore doc with correct `parent_submission_id` and `challengeId`
-- [ ] 2.7 HTTP URL rejected with error message; no Firestore write
-- [ ] 2.8 After publish: form closes, fields clear
+- [x] 2.3 Follow-Up button opens inline form; comment section closes if open
+- [x] 2.4 Parent context block shows correct thumbnail, author, and truncated reflection
+- [x] 2.5 Whitespace-only reflection: counter "0 / 50", button disabled
+- [x] 2.6 Valid follow-up submit creates Firestore doc with correct `parent_submission_id` and `challengeId`
+- [x] 2.7 HTTP URL rejected with error message; no Firestore write
+- [x] 2.8 After publish: form closes, fields clear
 
 ### Phase 3: Chain Tree Rendering
 

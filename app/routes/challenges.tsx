@@ -35,7 +35,14 @@ function SubmissionCard({ submission }: { submission: Submission }) {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
+  const [followUpOpen, setFollowUpOpen] = useState(false);
+  const [fuPhotoUrl, setFuPhotoUrl] = useState("");
+  const [fuReflection, setFuReflection] = useState("");
+  const [fuSubmitting, setFuSubmitting] = useState(false);
+  const [fuError, setFuError] = useState<string | null>(null);
+
   const canPost = commentText.trim().length >= 10 && !submitting;
+  const canFollowUp = fuPhotoUrl.trim().length > 0 && fuReflection.trim().length >= 50 && !fuSubmitting;
 
   // Fetch initial count on mount so the badge is populated before expanding
   useEffect(() => {
@@ -109,6 +116,46 @@ function SubmissionCard({ submission }: { submission: Submission }) {
     }
   }
 
+  async function handleFollowUp(e: React.FormEvent) {
+    e.preventDefault();
+    if (!canFollowUp || !user) return;
+
+    try {
+      if (new URL(fuPhotoUrl.trim()).protocol !== "https:") {
+        setFuError("Only HTTPS image URLs are allowed.");
+        return;
+      }
+    } catch {
+      setFuError("Please enter a valid URL.");
+      return;
+    }
+
+    setFuSubmitting(true);
+    setFuError(null);
+
+    try {
+      await addDoc(collection(db, "submissions"), {
+        challengeId: submission.challengeId,
+        photoUrl: fuPhotoUrl.trim(),
+        reflection: fuReflection.trim(),
+        authorUid: user.uid,
+        authorEmail: user.email ?? "",
+        createdAt: serverTimestamp(),
+        parent_submission_id: submission.id,
+      });
+      if (!mountedRef.current) return;
+      setFuPhotoUrl("");
+      setFuReflection("");
+      setFuSubmitting(false);
+      setFollowUpOpen(false);
+    } catch (err) {
+      console.error("Follow-up submission failed:", err);
+      if (!mountedRef.current) return;
+      setFuError("Failed to publish. Please try again.");
+      setFuSubmitting(false);
+    }
+  }
+
   return (
     <li className="flex flex-col gap-2 py-3 border-t border-gray-100 dark:border-gray-800">
       {/* Submission display */}
@@ -128,14 +175,118 @@ function SubmissionCard({ submission }: { submission: Submission }) {
         </div>
       </div>
 
-      {/* Comments toggle button */}
-      <button
-        type="button"
-        onClick={() => setCommentOpen((v) => !v)}
-        className="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 mt-1 text-left"
-      >
-        Comments ({commentCount})
-      </button>
+      {/* Action buttons */}
+      <div className="flex items-center gap-3 mt-1">
+        <button
+          type="button"
+          onClick={() => { setCommentOpen((v) => !v); setFollowUpOpen(false); }}
+          className="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 text-left"
+        >
+          Comments ({commentCount})
+        </button>
+        {user && (
+          <button
+            type="button"
+            onClick={() => { setFollowUpOpen((v) => !v); setCommentOpen(false); }}
+            className="text-xs text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200 text-left"
+          >
+            {followUpOpen ? "Cancel Follow-Up" : "Follow-Up"}
+          </button>
+        )}
+      </div>
+
+      {/* Follow-up form */}
+      {followUpOpen && (
+        <div className="mt-3 pt-3 border-t border-gray-100 dark:border-gray-800">
+          {/* Parent context block */}
+          <div className="bg-gray-50 dark:bg-gray-800 rounded p-3 flex gap-3 mb-4">
+            <img
+              src={submission.photoUrl}
+              alt=""
+              className="w-10 h-10 object-cover rounded flex-shrink-0"
+            />
+            <div className="min-w-0">
+              <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-0.5">
+                Responding to:
+              </p>
+              <p className="text-xs font-medium text-gray-700 dark:text-gray-300 truncate">
+                {submission.authorEmail}
+              </p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-2">
+                {submission.reflection.length > 80
+                  ? submission.reflection.slice(0, 80) + "…"
+                  : submission.reflection}
+              </p>
+            </div>
+          </div>
+
+          <form onSubmit={handleFollowUp} className="space-y-3">
+            {/* Photo URL */}
+            <div>
+              <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Photo URL
+              </label>
+              <input
+                type="url"
+                value={fuPhotoUrl}
+                onChange={(e) => setFuPhotoUrl(e.target.value)}
+                placeholder="Paste a hosted HTTPS image URL"
+                className="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+              />
+              {fuPhotoUrl.trim().length > 0 && (
+                <img
+                  src={fuPhotoUrl}
+                  alt="Preview"
+                  className="w-full max-h-36 object-cover rounded mt-2"
+                />
+              )}
+            </div>
+
+            {/* Reflection */}
+            <div>
+              <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Reflection
+              </label>
+              <textarea
+                value={fuReflection}
+                onChange={(e) => setFuReflection(e.target.value)}
+                rows={3}
+                className="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+              />
+              <p
+                className={
+                  fuReflection.trim().length >= 50
+                    ? "text-xs text-green-600 dark:text-green-400"
+                    : "text-xs text-gray-400 dark:text-gray-500"
+                }
+              >
+                {fuReflection.trim().length} / 50 characters
+              </p>
+            </div>
+
+            {fuError && (
+              <p className="text-sm text-red-600 dark:text-red-400">{fuError}</p>
+            )}
+
+            <div className="flex items-center gap-3">
+              <button
+                type="submit"
+                disabled={!canFollowUp}
+                className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs font-medium px-3 py-1.5 rounded"
+              >
+                {fuSubmitting ? "Publishing…" : "Publish"}
+              </button>
+              <button
+                type="button"
+                onClick={() => { setFollowUpOpen(false); setFuPhotoUrl(""); setFuReflection(""); setFuError(null); }}
+                className="text-xs text-gray-500 dark:text-gray-400 hover:underline"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
 
       {/* Comment section */}
       {commentOpen && (
