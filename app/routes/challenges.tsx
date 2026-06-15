@@ -3,6 +3,9 @@ import { Link } from "react-router";
 import {
   addDoc,
   collection,
+  deleteDoc,
+  doc,
+  getCountFromServer,
   onSnapshot,
   orderBy,
   query,
@@ -12,7 +15,202 @@ import {
 import { db } from "~/firebase";
 import { useAuth } from "~/context/auth";
 import type { Challenge } from "~/types/challenge";
+import type { Comment } from "~/types/comment";
 import type { Submission } from "~/types/submission";
+
+// ---------------------------------------------------------------------------
+// SubmissionCard — manages its own comment listener and form state
+// ---------------------------------------------------------------------------
+
+function SubmissionCard({ submission }: { submission: Submission }) {
+  const { user } = useAuth();
+  const mountedRef = useRef(true);
+  useEffect(() => () => { mountedRef.current = false; }, []);
+
+  const [commentOpen, setCommentOpen] = useState(false);
+  const [commentCount, setCommentCount] = useState(0);
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [commentsLoading, setCommentsLoading] = useState(false);
+  const [commentText, setCommentText] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
+  const canPost = commentText.trim().length >= 10 && !submitting;
+
+  // Fetch initial count on mount so the badge is populated before expanding
+  useEffect(() => {
+    getCountFromServer(collection(db, "submissions", submission.id, "comments"))
+      .then((snap) => {
+        if (mountedRef.current) setCommentCount(snap.data().count);
+      })
+      .catch(() => {
+        // Non-critical; count stays 0 on error
+      });
+  }, [submission.id]);
+
+  // Wire/unwire the real-time listener when the toggle changes
+  useEffect(() => {
+    if (!commentOpen) return;
+    setCommentsLoading(true);
+    const q = query(
+      collection(db, "submissions", submission.id, "comments"),
+      orderBy("createdAt", "asc")
+    );
+    const unsub = onSnapshot(q, (snap) => {
+      setComments(snap.docs.map((d) => ({ id: d.id, ...d.data() }) as Comment));
+      setCommentCount(snap.size);
+      setCommentsLoading(false);
+    });
+    return unsub;
+  }, [commentOpen, submission.id]);
+
+  async function handlePost(e: React.FormEvent) {
+    e.preventDefault();
+    if (!canPost || !user) return;
+    setSubmitting(true);
+    setSubmitError(null);
+    try {
+      await addDoc(
+        collection(db, "submissions", submission.id, "comments"),
+        {
+          text: commentText.trim(),
+          authorUid: user.uid,
+          authorEmail: user.email ?? "",
+          createdAt: serverTimestamp(),
+        }
+      );
+      if (!mountedRef.current) return;
+      setCommentText("");
+      setSubmitting(false);
+    } catch (err) {
+      console.error("Comment post failed:", err);
+      if (!mountedRef.current) return;
+      setSubmitError("Failed to post. Please try again.");
+      setSubmitting(false);
+    }
+  }
+
+  async function handleDelete(commentId: string) {
+    try {
+      await deleteDoc(
+        doc(db, "submissions", submission.id, "comments", commentId)
+      );
+    } catch (err) {
+      console.error("Comment delete failed:", err);
+      setSubmitError("Failed to delete comment.");
+    }
+  }
+
+  return (
+    <li className="flex flex-col gap-2 py-3 border-t border-gray-100 dark:border-gray-800">
+      {/* Submission display */}
+      <div className="flex gap-3">
+        <img
+          src={submission.photoUrl}
+          alt={`Submission by ${submission.authorEmail}`}
+          className="w-16 h-16 object-cover rounded flex-shrink-0"
+        />
+        <div className="min-w-0">
+          <p className="text-sm font-medium text-gray-700 dark:text-gray-300 truncate">
+            {submission.authorEmail}
+          </p>
+          <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 mt-0.5">
+            {submission.reflection}
+          </p>
+        </div>
+      </div>
+
+      {/* Comments toggle button */}
+      <button
+        type="button"
+        onClick={() => setCommentOpen((v) => !v)}
+        className="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 mt-1 text-left"
+      >
+        Comments ({commentCount})
+      </button>
+
+      {/* Comment section */}
+      {commentOpen && (
+        <div className="mt-3 pt-3 border-t border-gray-100 dark:border-gray-800">
+          {commentsLoading ? (
+            <p className="text-sm text-gray-400 dark:text-gray-500 py-2">
+              Loading comments…
+            </p>
+          ) : comments.length === 0 ? (
+            <p className="text-sm text-gray-400 dark:text-gray-500 py-2 italic">
+              No comments yet — be the first to respond.
+            </p>
+          ) : (
+            <ul className="mb-4">
+              {comments.map((comment) => (
+                <li
+                  key={comment.id}
+                  className="flex flex-col gap-0.5 py-2 border-b border-gray-50 dark:border-gray-800 last:border-0"
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
+                      {comment.authorEmail}
+                    </span>
+                    <span className="text-xs text-gray-400 dark:text-gray-500">
+                      {comment.createdAt
+                        ? comment.createdAt.toDate().toLocaleString()
+                        : ""}
+                    </span>
+                    {comment.authorUid === user?.uid && (
+                      <button
+                        type="button"
+                        onClick={() => handleDelete(comment.id)}
+                        className="text-xs text-gray-400 dark:text-gray-500 hover:text-red-500 ml-auto"
+                        aria-label="Delete comment"
+                      >
+                        Delete
+                      </button>
+                    )}
+                  </div>
+                  <p className="text-sm text-gray-800 dark:text-gray-100">
+                    {comment.text}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {/* Comment form */}
+          <form onSubmit={handlePost} className="space-y-2">
+            <textarea
+              value={commentText}
+              onChange={(e) => setCommentText(e.target.value)}
+              rows={2}
+              placeholder="Add a comment…"
+              className="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+            />
+            <p
+              className={
+                commentText.length >= 10
+                  ? "text-xs text-green-600 dark:text-green-400"
+                  : "text-xs text-gray-400 dark:text-gray-500"
+              }
+            >
+              {commentText.length} / 10 characters
+            </p>
+            {submitError && (
+              <p className="text-sm text-red-600 dark:text-red-400">
+                {submitError}
+              </p>
+            )}
+            <button
+              type="submit"
+              disabled={!canPost}
+              className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs font-medium px-3 py-1.5 rounded"
+            >
+              {submitting ? "Posting…" : "Post"}
+            </button>
+          </form>
+        </div>
+      )}
+    </li>
+  );
+}
 
 // ---------------------------------------------------------------------------
 // ChallengeCard — manages its own submissions listener
@@ -231,24 +429,7 @@ function ChallengeCard({ challenge }: ChallengeCardProps) {
             ) : (
               <ul>
                 {submissions.map((sub) => (
-                  <li
-                    key={sub.id}
-                    className="flex gap-3 py-3 border-t border-gray-100 dark:border-gray-800"
-                  >
-                    <img
-                      src={sub.photoUrl}
-                      alt={`Submission by ${sub.authorEmail}`}
-                      className="w-16 h-16 object-cover rounded flex-shrink-0"
-                    />
-                    <div className="min-w-0">
-                      <p className="text-sm font-medium text-gray-700 dark:text-gray-300 truncate">
-                        {sub.authorEmail}
-                      </p>
-                      <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 mt-0.5">
-                        {sub.reflection}
-                      </p>
-                    </div>
-                  </li>
+                  <SubmissionCard key={sub.id} submission={sub} />
                 ))}
               </ul>
             )}
