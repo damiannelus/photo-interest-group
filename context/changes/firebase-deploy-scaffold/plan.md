@@ -360,29 +360,29 @@ No existing data or users to migrate. The only "rollback" concern is the `fireba
 
 #### Automated
 
-- [x] 1.1 `npm install` completes without errors after firebase package added
-- [x] 1.2 `npm run build` exits 0 and `build/client/index.html` exists
-- [x] 1.3 `npm run typecheck` exits 0
-- [x] 1.4 No `build/server/` directory exists after build
+- [x] 1.1 `npm install` completes without errors after firebase package added — 402e771
+- [x] 1.2 `npm run build` exits 0 and `build/client/index.html` exists — 402e771
+- [x] 1.3 `npm run typecheck` exits 0 — 402e771
+- [x] 1.4 No `build/server/` directory exists after build — 402e771
 
 #### Manual
 
-- [x] 1.5 Welcome page loads via `npx serve build/client` with no console errors
-- [x] 1.6 `.env.local` is not staged by `git status`
+- [x] 1.5 Welcome page loads via `npx serve build/client` with no console errors — 402e771
+- [x] 1.6 `.env.local` is not staged by `git status` — 402e771
 
 ### Phase 2: Firebase Hosting Config + First Deploy
 
 #### Automated
 
-- [ ] 2.1 `firebase serve` serves app at `localhost:5000` without errors
+- [x] 2.1 `firebase serve` serves app at `localhost:5000` without errors
 
 #### Manual
 
-- [ ] 2.2 `firebase deploy --only hosting` exits 0 and prints Hosting URL
-- [ ] 2.3 Hosting URL loads the welcome page in a browser
-- [ ] 2.4 Firebase Console → Hosting shows a release in Release History
-- [ ] 2.5 Firebase Console → Billing shows Blaze plan active
-- [ ] 2.6 GCP Console → Billing → Budgets shows the $5 alert configured
+- [x] 2.2 `firebase deploy --only hosting` exits 0 and prints Hosting URL
+- [x] 2.3 Hosting URL loads the welcome page in a browser
+- [x] 2.4 Firebase Console → Hosting shows a release in Release History
+- [x] 2.5 Firebase Console → Billing shows Blaze plan active
+- [x] 2.6 GCP Console → Billing → Budgets shows the $5 alert configured
 
 ### Phase 3: GitHub Actions CI/CD + IAM Hardening
 
