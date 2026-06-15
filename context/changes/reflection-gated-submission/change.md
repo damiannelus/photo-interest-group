@@ -1,7 +1,7 @@
 ---
 id: reflection-gated-submission
 title: "Reflection-Gated Photo Submission (North Star)"
-status: implementing
+status: implemented
 created: 2026-06-15
 updated: 2026-06-15
 roadmap_id: S-02

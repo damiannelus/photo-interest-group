@@ -286,14 +286,14 @@ No data migration. The `submissions` collection is already live (created in F-03
 
 #### Automated
 
-- [x] 2.1 `npm run typecheck` exits 0
-- [x] 2.2 `npm run build` exits 0
+- [x] 2.1 `npm run typecheck` exits 0 — a3e7568
+- [x] 2.2 `npm run build` exits 0 — a3e7568
 
 #### Manual
 
-- [x] 2.3 Character counter turns green at exactly 50 chars
-- [x] 2.4 "Publishing…" label shown during write; button un-clickable
-- [x] 2.5 Dark mode styles correct on all form inputs and buttons
-- [x] 2.6 Form readable and usable at 375px mobile width
-- [x] 2.7 Submit error message shown on Firestore write failure
-- [x] 2.8 Server-side gate test: direct `addDoc` with <50-char reflection throws permission denied
+- [x] 2.3 Character counter turns green at exactly 50 chars — a3e7568
+- [x] 2.4 "Publishing…" label shown during write; button un-clickable — a3e7568
+- [x] 2.5 Dark mode styles correct on all form inputs and buttons — a3e7568
+- [x] 2.6 Form readable and usable at 375px mobile width — a3e7568
+- [x] 2.7 Submit error message shown on Firestore write failure — a3e7568
+- [x] 2.8 Server-side gate test: direct `addDoc` with <50-char reflection throws permission denied — a3e7568
