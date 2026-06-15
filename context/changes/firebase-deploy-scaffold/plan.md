@@ -388,10 +388,10 @@ No existing data or users to migrate. The only "rollback" concern is the `fireba
 
 #### Automated
 
-- [ ] 3.1 PR triggers GitHub Actions run without errors and posts preview channel URL
-- [ ] 3.2 Merge to main triggers live deploy (Release History shows GitHub Actions entry)
+- [x] 3.1 PR triggers GitHub Actions run without errors and posts preview channel URL — 471d7e0
+- [x] 3.2 Merge to main triggers live deploy (Release History shows GitHub Actions entry) — 471d7e0
 
 #### Manual
 
-- [ ] 3.3 Preview channel URL from PR loads the app correctly
-- [ ] 3.4 GCP IAM confirms service account has `roles/firebasehosting.admin` and `roles/iam.serviceAccountTokenCreator` only (no `roles/editor`)
+- [x] 3.3 Preview channel URL from PR loads the app correctly — 471d7e0
+- [x] 3.4 GCP IAM confirms service account has `roles/firebasehosting.admin` and `roles/iam.serviceAccountTokenCreator` only (no `roles/editor`) — 471d7e0
