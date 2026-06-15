@@ -1,9 +1,10 @@
 ---
 id: submission-comments
 title: "Submission Comments (S-04)"
-status: implemented
+status: impl_reviewed
 created: 2026-06-15
 updated: 2026-06-15
+reviewed_at: 2026-06-15
 implemented_at: 2026-06-15
 roadmap_id: S-04
 prd_refs: ["FR-011", "FR-012"]

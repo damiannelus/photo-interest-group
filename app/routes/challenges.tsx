@@ -56,11 +56,18 @@ function SubmissionCard({ submission }: { submission: Submission }) {
       collection(db, "submissions", submission.id, "comments"),
       orderBy("createdAt", "asc")
     );
-    const unsub = onSnapshot(q, (snap) => {
-      setComments(snap.docs.map((d) => ({ id: d.id, ...d.data() }) as Comment));
-      setCommentCount(snap.size);
-      setCommentsLoading(false);
-    });
+    const unsub = onSnapshot(
+      q,
+      (snap) => {
+        setComments(snap.docs.map((d) => ({ id: d.id, ...d.data() }) as Comment));
+        setCommentCount(snap.size);
+        setCommentsLoading(false);
+      },
+      (_err) => {
+        setCommentsLoading(false);
+        setSubmitError("Failed to load comments. Please refresh.");
+      }
+    );
     return unsub;
   }, [commentOpen, submission.id]);
 
@@ -97,6 +104,7 @@ function SubmissionCard({ submission }: { submission: Submission }) {
       );
     } catch (err) {
       console.error("Comment delete failed:", err);
+      if (!mountedRef.current) return;
       setSubmitError("Failed to delete comment.");
     }
   }
@@ -186,12 +194,12 @@ function SubmissionCard({ submission }: { submission: Submission }) {
             />
             <p
               className={
-                commentText.length >= 10
+                commentText.trim().length >= 10
                   ? "text-xs text-green-600 dark:text-green-400"
                   : "text-xs text-gray-400 dark:text-gray-500"
               }
             >
-              {commentText.length} / 10 characters
+              {commentText.trim().length} / 10 characters
             </p>
             {submitError && (
               <p className="text-sm text-red-600 dark:text-red-400">
