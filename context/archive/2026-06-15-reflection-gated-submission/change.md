@@ -1,9 +1,10 @@
 ---
 id: reflection-gated-submission
 title: "Reflection-Gated Photo Submission (North Star)"
-status: impl_reviewed
+status: archived
 created: 2026-06-15
 updated: 2026-06-15
+archived_at: 2026-06-15T17:40:48Z
 roadmap_id: S-02
 prd_refs: ["FR-006", "FR-007", "FR-008", "US-01"]
 prerequisites: ["challenge-submission-feed"]
