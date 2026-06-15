@@ -270,8 +270,8 @@ Auth state resolution adds ~50–100 ms on first load before the protected route
 
 #### Automated
 
-- [x] 2.1 `npm run typecheck` exits 0
-- [x] 2.2 `npm run build` exits 0
+- [x] 2.1 `npm run typecheck` exits 0 — ec7a155
+- [x] 2.2 `npm run build` exits 0 — ec7a155
 
 #### Manual
 
@@ -285,8 +285,8 @@ Auth state resolution adds ~50–100 ms on first load before the protected route
 
 #### Automated
 
-- [ ] 3.1 `npm run typecheck` exits 0
-- [ ] 3.2 `npm run build` exits 0
+- [x] 3.1 `npm run typecheck` exits 0
+- [x] 3.2 `npm run build` exits 0
 
 #### Manual
 
