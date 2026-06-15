@@ -1,8 +1,9 @@
 ---
 change_id: firebase-deploy-scaffold
-status: impl_reviewed
+status: archived
 created: 2026-06-14
 updated: 2026-06-15
+archived_at: 2026-06-15T00:00:00Z
 roadmap_id: F-01
 ---
 
