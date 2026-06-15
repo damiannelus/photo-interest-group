@@ -1,7 +1,8 @@
 ---
 id: follow-up-submission
 title: Follow-Up Submission
-status: impl_reviewed
+status: archived
+archived_at: 2026-06-15T19:24:03Z
 created: 2026-06-15
 updated: 2026-06-15
 ---
