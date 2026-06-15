@@ -275,12 +275,12 @@ No data migration. The `submissions` collection is already live (created in F-03
 
 #### Manual
 
-- [x] 1.3 "Submit Photo" button on card header toggles inline form open/closed
-- [x] 1.4 "Publish" disabled with empty URL or <50-char reflection
-- [x] 1.5 Pasting a valid image URL shows photo preview below input
-- [x] 1.6 "Publish" enabled once URL is non-empty AND reflection ≥ 50 chars
-- [x] 1.7 Submitting writes to Firestore and new submission appears in feed without page refresh
-- [x] 1.8 "Cancel" collapses form without submitting
+- [x] 1.3 "Submit Photo" button on card header toggles inline form open/closed — a3e7568
+- [x] 1.4 "Publish" disabled with empty URL or <50-char reflection — a3e7568
+- [x] 1.5 Pasting a valid image URL shows photo preview below input — a3e7568
+- [x] 1.6 "Publish" enabled once URL is non-empty AND reflection ≥ 50 chars — a3e7568
+- [x] 1.7 Submitting writes to Firestore and new submission appears in feed without page refresh — a3e7568
+- [x] 1.8 "Cancel" collapses form without submitting — a3e7568
 
 ### Phase 2: Polish + Error States
 
