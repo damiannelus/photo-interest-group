@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
 import {
   addDoc,
@@ -24,6 +24,8 @@ interface ChallengeCardProps {
 
 function ChallengeCard({ challenge }: ChallengeCardProps) {
   const { user } = useAuth();
+  const mountedRef = useRef(true);
+  useEffect(() => () => { mountedRef.current = false; }, []);
 
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [subsLoading, setSubsLoading] = useState(true);
@@ -35,14 +37,24 @@ function ChallengeCard({ challenge }: ChallengeCardProps) {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
-  const canPublish =
+  const canSubmit =
     photoUrl.trim().length > 0 &&
     reflection.trim().length >= 50 &&
     !submitting;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!canPublish || !user) return;
+    if (!canSubmit || !user) return;
+
+    try {
+      if (new URL(photoUrl.trim()).protocol !== "https:") {
+        setSubmitError("Only HTTPS image URLs are allowed.");
+        return;
+      }
+    } catch {
+      setSubmitError("Please enter a valid URL.");
+      return;
+    }
 
     setSubmitting(true);
     setSubmitError(null);
@@ -55,13 +67,13 @@ function ChallengeCard({ challenge }: ChallengeCardProps) {
         authorUid: user.uid,
         authorEmail: user.email ?? "",
         createdAt: serverTimestamp(),
-        parent_submission_id: null,
       });
+      if (!mountedRef.current) return;
       setPhotoUrl("");
       setReflection("");
-      setSubmitting(false);
       setFormOpen(false);
-    } catch {
+    } catch (err) {
+      console.error("Submission failed:", err);
       setSubmitError("Failed to publish. Please try again.");
       setSubmitting(false);
     }
@@ -175,7 +187,7 @@ function ChallengeCard({ challenge }: ChallengeCardProps) {
           <div className="flex items-center gap-4">
             <button
               type="submit"
-              disabled={!canPublish}
+              disabled={!canSubmit}
               className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-medium px-4 py-2 rounded"
             >
               {submitting ? "Publishing…" : "Publish"}
