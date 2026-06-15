@@ -36,7 +36,7 @@ Photo-sharing platforms make self-reflection optional; this one makes it mandato
 | S-05  | challenge-creation          | create a new challenge with a title and description                                       | F-02, F-03    | FR-005                           | done     |
 | S-02  | reflection-gated-submission | submit a photo (URL) to a challenge with a 50-char reflection; see it in the feed immediately | S-01      | FR-006, FR-007, FR-008, US-01    | done     |
 | S-03  | follow-up-submission        | initiate a follow-up from an existing submission; parent context pre-filled; parent ID stored | S-02      | FR-009, FR-010                   | proposed |
-| S-04  | submission-comments         | post a text comment on any submission and view all comments                               | S-02          | FR-011, FR-012                   | proposed |
+| S-04  | submission-comments         | post a text comment on any submission and view all comments                               | S-02          | FR-011, FR-012                   | done     |
 
 ## Streams
 
@@ -161,7 +161,7 @@ What's already in place in the codebase as of 2026-06-14 (auto-researched + user
 - **Blockers:** —
 - **Unknowns:** —
 - **Risk:** Depends on S-02 so at least one real published submission exists for testing the comment flow end-to-end; parallel with S-03 since neither depends on the other.
-- **Status:** proposed
+- **Status:** done
 
 ## Backlog Handoff
 
@@ -197,3 +197,4 @@ What's already in place in the codebase as of 2026-06-14 (auto-researched + user
 - **S-01: view active challenges and their submissions in the main feed** — Archived 2026-06-15 → `context/archive/2026-06-15-challenge-submission-feed/`. Lesson: —.
 - **S-05: create a new challenge with a title and description** — Archived 2026-06-15 → `context/archive/2026-06-15-challenge-creation/`. Lesson: —.
 - **S-02: user can submit a photo (by URL) to a challenge with a reflection of at least 50 characters; the "Publish" button is disabled until both conditions are met; the submission appears in the feed immediately after publishing without a page refresh.** — Archived 2026-06-15 → `context/archive/2026-06-15-reflection-gated-submission/`. Lesson: —.
+- **S-04: user can post a text comment on any submission and view all existing comments on that submission.** — Archived 2026-06-15 → `context/archive/2026-06-15-submission-comments/`. Lesson: —.

@@ -1,9 +1,10 @@
 ---
 id: submission-comments
 title: "Submission Comments (S-04)"
-status: impl_reviewed
+status: archived
 created: 2026-06-15
 updated: 2026-06-15
+archived_at: 2026-06-15T18:42:34Z
 reviewed_at: 2026-06-15
 implemented_at: 2026-06-15
 roadmap_id: S-04
