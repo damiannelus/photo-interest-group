@@ -30,7 +30,7 @@ Photo-sharing platforms make self-reflection optional; this one makes it mandato
 | ID    | Change ID                   | Outcome (user can …)                                                                      | Prerequisites | PRD refs                         | Status   |
 | ----- | --------------------------- | ----------------------------------------------------------------------------------------- | ------------- | -------------------------------- | -------- |
 | F-01  | firebase-deploy-scaffold    | (foundation) Firebase SDK initialized; firebase.json + CI/CD wired                        | —             | FR-001, FR-002, NFR: unauth      | done     |
-| F-02  | auth-whitelist-gate         | (foundation) Google Sign-In live; whitelist gate active; all routes guarded               | F-01          | FR-001, FR-002                   | proposed |
+| F-02  | auth-whitelist-gate         | (foundation) Google Sign-In live; whitelist gate active; all routes guarded               | F-01          | FR-001, FR-002                   | done     |
 | F-03  | firestore-schema-and-rules  | (foundation) Firestore collections defined; security rules enforce whitelist               | F-01          | FR-004–012, NFR: unauth          | proposed |
 | S-01  | challenge-submission-feed   | view active challenges and their submissions in the main feed                             | F-02, F-03    | FR-004, FR-008                   | proposed |
 | S-05  | challenge-creation          | create a new challenge with a title and description                                       | F-02, F-03    | FR-005                           | proposed |
@@ -86,7 +86,7 @@ What's already in place in the codebase as of 2026-06-14 (auto-researched + user
 - **Blockers:** —
 - **Unknowns:** Where is the whitelist stored — a Firestore `whitelist` collection (requires F-03 initialized first) or an environment-variable email array (allows F-02 to run fully in parallel with F-03)? Owner: user. Block: no (env-var array is sufficient for a ≤15-member MVP and preserves the parallel execution path; Firestore-backed whitelist can be wired later).
 - **Risk:** Sequenced after F-01 to avoid wiring Firebase Auth before the SDK initialization is confirmed working in the chosen deploy target; an auth flow wired to a misconfigured Firebase project fails silently.
-- **Status:** proposed
+- **Status:** done
 
 ### F-03: Firestore schema + security rules
 
@@ -192,3 +192,4 @@ What's already in place in the codebase as of 2026-06-14 (auto-researched + user
 ## Done
 
 - **F-01: (foundation) Firebase SDK initialized; firebase.json + CI/CD wired** — Archived 2026-06-15 → `context/archive/2026-06-14-firebase-deploy-scaffold/`. Lesson: —.
+- **F-02: (foundation) Google Sign-In live; whitelist gate active; all routes guarded** — Archived 2026-06-15 → `context/archive/2026-06-15-auth-whitelist-gate/`. Lesson: —.
