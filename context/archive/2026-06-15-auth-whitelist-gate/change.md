@@ -1,8 +1,9 @@
 ---
 change_id: auth-whitelist-gate
-status: impl_reviewed
+status: archived
 created: 2026-06-15
 updated: 2026-06-15
+archived_at: 2026-06-15T08:25:02Z
 
 roadmap_id: F-02
 ---

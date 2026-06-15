@@ -1,4 +1,8 @@
 {
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
   "hosting": {
     "public": "build/client",
     "ignore": [
@@ -7,10 +11,6 @@
       "**/node_modules/**"
     ],
     "rewrites": [
-      {
-        "source": "/__/auth/**",
-        "destination": "/__/auth/handler"
-      },
       {
         "source": "**",
         "destination": "/index.html"

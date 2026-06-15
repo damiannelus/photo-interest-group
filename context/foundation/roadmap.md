@@ -30,13 +30,13 @@ Photo-sharing platforms make self-reflection optional; this one makes it mandato
 | ID    | Change ID                   | Outcome (user can …)                                                                      | Prerequisites | PRD refs                         | Status   |
 | ----- | --------------------------- | ----------------------------------------------------------------------------------------- | ------------- | -------------------------------- | -------- |
 | F-01  | firebase-deploy-scaffold    | (foundation) Firebase SDK initialized; firebase.json + CI/CD wired                        | —             | FR-001, FR-002, NFR: unauth      | done     |
-| F-02  | auth-whitelist-gate         | (foundation) Google Sign-In live; whitelist gate active; all routes guarded               | F-01          | FR-001, FR-002                   | proposed |
-| F-03  | firestore-schema-and-rules  | (foundation) Firestore collections defined; security rules enforce whitelist               | F-01          | FR-004–012, NFR: unauth          | proposed |
-| S-01  | challenge-submission-feed   | view active challenges and their submissions in the main feed                             | F-02, F-03    | FR-004, FR-008                   | proposed |
-| S-05  | challenge-creation          | create a new challenge with a title and description                                       | F-02, F-03    | FR-005                           | proposed |
-| S-02  | reflection-gated-submission | submit a photo (URL) to a challenge with a 50-char reflection; see it in the feed immediately | S-01      | FR-006, FR-007, FR-008, US-01    | proposed |
+| F-02  | auth-whitelist-gate         | (foundation) Google Sign-In live; whitelist gate active; all routes guarded               | F-01          | FR-001, FR-002                   | done     |
+| F-03  | firestore-schema-and-rules  | (foundation) Firestore collections defined; security rules enforce whitelist               | F-01          | FR-004–012, NFR: unauth          | done     |
+| S-01  | challenge-submission-feed   | view active challenges and their submissions in the main feed                             | F-02, F-03    | FR-004, FR-008                   | done     |
+| S-05  | challenge-creation          | create a new challenge with a title and description                                       | F-02, F-03    | FR-005                           | done     |
+| S-02  | reflection-gated-submission | submit a photo (URL) to a challenge with a 50-char reflection; see it in the feed immediately | S-01      | FR-006, FR-007, FR-008, US-01    | done     |
 | S-03  | follow-up-submission        | initiate a follow-up from an existing submission; parent context pre-filled; parent ID stored | S-02      | FR-009, FR-010                   | proposed |
-| S-04  | submission-comments         | post a text comment on any submission and view all comments                               | S-02          | FR-011, FR-012                   | proposed |
+| S-04  | submission-comments         | post a text comment on any submission and view all comments                               | S-02          | FR-011, FR-012                   | done     |
 
 ## Streams
 
@@ -86,7 +86,7 @@ What's already in place in the codebase as of 2026-06-14 (auto-researched + user
 - **Blockers:** —
 - **Unknowns:** Where is the whitelist stored — a Firestore `whitelist` collection (requires F-03 initialized first) or an environment-variable email array (allows F-02 to run fully in parallel with F-03)? Owner: user. Block: no (env-var array is sufficient for a ≤15-member MVP and preserves the parallel execution path; Firestore-backed whitelist can be wired later).
 - **Risk:** Sequenced after F-01 to avoid wiring Firebase Auth before the SDK initialization is confirmed working in the chosen deploy target; an auth flow wired to a misconfigured Firebase project fails silently.
-- **Status:** proposed
+- **Status:** done
 
 ### F-03: Firestore schema + security rules
 
@@ -99,7 +99,7 @@ What's already in place in the codebase as of 2026-06-14 (auto-researched + user
 - **Blockers:** —
 - **Unknowns:** —
 - **Risk:** Firestore security rules are the sole server-side enforcement of all data-access NFRs in a static-export SPA (no server middleware to intercept requests); getting them wrong leaves data readable by anyone with the Firebase project URL even if the UI is correct. Sequenced as a foundation — not buried in a slice — for this reason.
-- **Status:** proposed
+- **Status:** done
 
 ## Slices
 
@@ -113,7 +113,7 @@ What's already in place in the codebase as of 2026-06-14 (auto-researched + user
 - **Blockers:** —
 - **Unknowns:** —
 - **Risk:** Sequenced before S-02 (submission) because the submission form opens from within a challenge context (step 3 of the 7-step Success Criteria flow); a seed challenge from F-03 makes this slice testable without S-05 (create challenge) being complete.
-- **Status:** proposed
+- **Status:** done
 
 ### S-05: Challenge creation
 
@@ -125,7 +125,7 @@ What's already in place in the codebase as of 2026-06-14 (auto-researched + user
 - **Blockers:** —
 - **Unknowns:** —
 - **Risk:** Parallel with S-01 because both share the same Prerequisites (F-02 + F-03) and neither depends on the other; a seeded challenge from F-03 decouples S-01's testability from this slice.
-- **Status:** proposed
+- **Status:** done
 
 ### S-02: Reflection-gated photo submission *(north star)*
 
@@ -137,7 +137,7 @@ What's already in place in the codebase as of 2026-06-14 (auto-researched + user
 - **Blockers:** —
 - **Unknowns:** —
 - **Risk:** The 50-character reflection gate must be enforced both client-side (disabled Publish button) and server-side (Firestore write rejected if reflection is absent or under threshold); a slice that enforces only one layer violates the Success Criteria guardrail and is treated as a critical bug. Sequenced after S-01 so the challenge-in-context flow (click "Submit Photo" on a challenge) is already working when this slice is planned.
-- **Status:** proposed
+- **Status:** done
 
 ### S-03: Follow-up submission
 
@@ -161,7 +161,7 @@ What's already in place in the codebase as of 2026-06-14 (auto-researched + user
 - **Blockers:** —
 - **Unknowns:** —
 - **Risk:** Depends on S-02 so at least one real published submission exists for testing the comment flow end-to-end; parallel with S-03 since neither depends on the other.
-- **Status:** proposed
+- **Status:** done
 
 ## Backlog Handoff
 
@@ -192,3 +192,9 @@ What's already in place in the codebase as of 2026-06-14 (auto-researched + user
 ## Done
 
 - **F-01: (foundation) Firebase SDK initialized; firebase.json + CI/CD wired** — Archived 2026-06-15 → `context/archive/2026-06-14-firebase-deploy-scaffold/`. Lesson: —.
+- **F-02: (foundation) Google Sign-In live; whitelist gate active; all routes guarded** — Archived 2026-06-15 → `context/archive/2026-06-15-auth-whitelist-gate/`. Lesson: —.
+- **F-03: (foundation) Firestore collections defined (challenges, submissions, comments); security rules enforce that only authenticated, whitelisted users can read or write any document; one seed challenge present for downstream slice testing.** — Archived 2026-06-15 → `context/archive/2026-06-15-firestore-schema-and-rules/`. Lesson: —.
+- **S-01: view active challenges and their submissions in the main feed** — Archived 2026-06-15 → `context/archive/2026-06-15-challenge-submission-feed/`. Lesson: —.
+- **S-05: create a new challenge with a title and description** — Archived 2026-06-15 → `context/archive/2026-06-15-challenge-creation/`. Lesson: —.
+- **S-02: user can submit a photo (by URL) to a challenge with a reflection of at least 50 characters; the "Publish" button is disabled until both conditions are met; the submission appears in the feed immediately after publishing without a page refresh.** — Archived 2026-06-15 → `context/archive/2026-06-15-reflection-gated-submission/`. Lesson: —.
+- **S-04: user can post a text comment on any submission and view all existing comments on that submission.** — Archived 2026-06-15 → `context/archive/2026-06-15-submission-comments/`. Lesson: —.

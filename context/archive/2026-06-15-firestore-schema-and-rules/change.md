@@ -1,8 +1,9 @@
 ---
 change_id: firestore-schema-and-rules
-status: planned
+status: archived
 created: 2026-06-15
 updated: 2026-06-15
+archived_at: 2026-06-15T10:02:42Z
 roadmap_id: F-03
 ---
 

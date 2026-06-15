@@ -284,26 +284,26 @@ No existing data. The `members` collection is the bootstrapping dependency — i
 
 #### Automated
 
-- [ ] 1.1 `npm run typecheck` exits 0
-- [ ] 1.2 `npm run build` exits 0
-- [ ] 1.3 `firebase deploy --only firestore:rules` exits 0
+- [x] 1.1 `npm run typecheck` exits 0 — 9c8e6a1
+- [x] 1.2 `npm run build` exits 0 — 9c8e6a1
+- [x] 1.3 `firebase deploy --only firestore:rules` exits 0 — 9c8e6a1
 
 #### Manual
 
-- [ ] 1.4 Firebase Console → Rules tab shows deployed rules matching firestore.rules
-- [ ] 1.5 Rules Playground: unauthenticated read on /challenges denied
-- [ ] 1.6 Rules Playground: submission create with short reflection denied
+- [x] 1.4 Firebase Console → Rules tab shows deployed rules matching firestore.rules — 9c8e6a1
+- [x] 1.5 Rules Playground: unauthenticated read on /challenges denied — 9c8e6a1
+- [x] 1.6 Rules Playground: submission create with short reflection denied — 9c8e6a1
 
 ### Phase 2: Deploy + Seed Data
 
 #### Automated
 
-- [ ] 2.1 `firebase deploy --only firestore:rules` exits 0
+- [x] 2.1 `firebase deploy --only firestore:rules` exits 0 — a9ed9b7
 
 #### Manual
 
-- [ ] 2.2 Whitelisted sign-in produces no permission-denied errors in console
-- [ ] 2.3 Direct Firestore read without auth throws permission denied
-- [ ] 2.4 Submission write with <50 char reflection throws permission denied
-- [ ] 2.5 /members/{your-email} document exists in Firestore Console
-- [ ] 2.6 Seed challenge document exists in /challenges with all required fields
+- [x] 2.2 Whitelisted sign-in produces no permission-denied errors in console — a9ed9b7
+- [x] 2.3 Direct Firestore read without auth throws permission denied — a9ed9b7
+- [x] 2.4 Submission write with <50 char reflection throws permission denied — a9ed9b7
+- [x] 2.5 /members/{your-email} document exists in Firestore Console — a9ed9b7
+- [x] 2.6 Seed challenge document exists in /challenges with all required fields — a9ed9b7
