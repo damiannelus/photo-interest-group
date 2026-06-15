@@ -284,15 +284,15 @@ No existing data. The `members` collection is the bootstrapping dependency — i
 
 #### Automated
 
-- [ ] 1.1 `npm run typecheck` exits 0
-- [ ] 1.2 `npm run build` exits 0
-- [ ] 1.3 `firebase deploy --only firestore:rules` exits 0
+- [x] 1.1 `npm run typecheck` exits 0
+- [x] 1.2 `npm run build` exits 0
+- [x] 1.3 `firebase deploy --only firestore:rules` exits 0
 
 #### Manual
 
-- [ ] 1.4 Firebase Console → Rules tab shows deployed rules matching firestore.rules
-- [ ] 1.5 Rules Playground: unauthenticated read on /challenges denied
-- [ ] 1.6 Rules Playground: submission create with short reflection denied
+- [x] 1.4 Firebase Console → Rules tab shows deployed rules matching firestore.rules
+- [x] 1.5 Rules Playground: unauthenticated read on /challenges denied
+- [x] 1.6 Rules Playground: submission create with short reflection denied
 
 ### Phase 2: Deploy + Seed Data
 
