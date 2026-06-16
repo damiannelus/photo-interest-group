@@ -25,7 +25,8 @@ service cloud.firestore {
                        request.resource.data.reflection.size() >= 50;
       allow update: if isWhitelisted() &&
                       request.auth.uid == resource.data.authorUid &&
-                      request.resource.data.authorUid == resource.data.authorUid;
+                      request.resource.data.authorUid == resource.data.authorUid &&
+                      request.resource.data.reflection.size() >= 50;
       allow delete: if isWhitelisted() &&
                       request.auth.uid == resource.data.authorUid;
 
