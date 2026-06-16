@@ -215,16 +215,16 @@ Add `checkCanEdit` to `gatePredicates.ts`, then wire state, handler, button, and
 
 #### Automated
 
-- [x] 2.1 TypeScript type check passes: `npx tsc --noEmit`
-- [x] 2.2 No lint errors: `npm run lint`
+- [x] 2.1 TypeScript type check passes: `npx tsc --noEmit` — b1a366c
+- [x] 2.2 No lint errors: `npm run lint` — b1a366c
 
 #### Manual
 
-- [x] 2.3 Author sees "Edit" button; other users do not
-- [x] 2.4 Opening Edit closes Comments and Follow-Up panels
-- [x] 2.5 Edit panel pre-populates with current reflection
-- [x] 2.6 50-char gate enforced: Save disabled below threshold, counter turns green at 50
-- [x] 2.7 Save writes update and closes panel; card re-renders via real-time listener
-- [x] 2.8 Firestore error surfaces inline error, leaves panel open
-- [x] 2.9 Cancel clears state without writing to Firestore
-- [x] 2.10 No regressions in Comments, Follow-Up, or Delete flows
+- [x] 2.3 Author sees "Edit" button; other users do not — b1a366c
+- [x] 2.4 Opening Edit closes Comments and Follow-Up panels — b1a366c
+- [x] 2.5 Edit panel pre-populates with current reflection — b1a366c
+- [x] 2.6 50-char gate enforced: Save disabled below threshold, counter turns green at 50 — b1a366c
+- [x] 2.7 Save writes update and closes panel; card re-renders via real-time listener — b1a366c
+- [x] 2.8 Firestore error surfaces inline error, leaves panel open — b1a366c
+- [x] 2.9 Cancel clears state without writing to Firestore — b1a366c
+- [x] 2.10 No regressions in Comments, Follow-Up, or Delete flows — b1a366c

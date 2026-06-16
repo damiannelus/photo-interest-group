@@ -1,7 +1,7 @@
 ---
 change_id: add-submission-update
 title: Add submission update
-status: implementing
+status: implemented
 created: 2026-06-16
 updated: 2026-06-16
 archived_at: null
