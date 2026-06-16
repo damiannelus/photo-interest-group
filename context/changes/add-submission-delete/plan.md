@@ -133,12 +133,12 @@ None for this change — the delete handler contains no extractable domain logic
 
 #### Automated
 
-- [x] 1.1 TypeScript compiles without errors: `npm run typecheck`
+- [x] 1.1 TypeScript compiles without errors: `npm run typecheck` — aed5502
 
 #### Manual
 
-- [x] 1.2 Delete button visible only to the submission author
-- [x] 1.3 Confirm dialog shown on click; cancel leaves submission unchanged
-- [x] 1.4 Confirming removes submission from feed immediately
-- [x] 1.5 No Delete button visible on another member's submission
-- [x] 1.6 Error message renders on delete failure; submission remains in feed
+- [x] 1.2 Delete button visible only to the submission author — aed5502
+- [x] 1.3 Confirm dialog shown on click; cancel leaves submission unchanged — aed5502
+- [x] 1.4 Confirming removes submission from feed immediately — aed5502
+- [x] 1.5 No Delete button visible on another member's submission — aed5502
+- [x] 1.6 Error message renders on delete failure; submission remains in feed — aed5502
