@@ -331,25 +331,25 @@ None in this phase. Phase 2 (Firestore emulator) covers cross-boundary integrati
 
 #### Automated
 
-- [x] 2.1 `npm test` passes all tests in submissionTree.test.ts
-- [x] 2.2 `npm test` passes all tests in gatePredicates.test.ts
-- [x] 2.3 `npm test` passes all tests in allowedEmails.test.ts
-- [x] 2.4 `npm run typecheck` passes after challenges.tsx import updates
+- [x] 2.1 `npm test` passes all tests in submissionTree.test.ts — 553c08b
+- [x] 2.2 `npm test` passes all tests in gatePredicates.test.ts — 553c08b
+- [x] 2.3 `npm test` passes all tests in allowedEmails.test.ts — 553c08b
+- [x] 2.4 `npm run typecheck` passes after challenges.tsx import updates — 553c08b
 
 #### Manual
 
-- [x] 2.5 Gate predicate live behaviour verified in dev server (9-char comment stays disabled, 10 enables)
+- [x] 2.5 Gate predicate live behaviour verified in dev server (9-char comment stays disabled, 10 enables) — 553c08b
 
 ### Phase 3: Extract Custom Hooks and Write Cleanup Tests
 
 #### Automated
 
-- [ ] 3.1 `npm test` passes all tests in useActiveChallenges.test.ts
-- [ ] 3.2 `npm test` passes all tests in useChallengeSubmissions.test.ts
-- [ ] 3.3 `npm test` passes all tests in useComments.test.ts
-- [ ] 3.4 `npm run typecheck` passes after hook extraction
+- [x] 3.1 `npm test` passes all tests in useActiveChallenges.test.ts
+- [x] 3.2 `npm test` passes all tests in useChallengeSubmissions.test.ts
+- [x] 3.3 `npm test` passes all tests in useComments.test.ts
+- [x] 3.4 `npm run typecheck` passes after hook extraction
 
 #### Manual
 
-- [ ] 3.5 Dev server: challenges load, submissions load, comment toggle works without errors
-- [ ] 3.6 `context/foundation/test-plan.md` §3 Phase 1 status updated to `complete`
+- [x] 3.5 Dev server: challenges load, submissions load, comment toggle works without errors
+- [x] 3.6 `context/foundation/test-plan.md` §3 Phase 1 status updated to `complete`
