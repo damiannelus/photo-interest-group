@@ -205,26 +205,26 @@ Add `checkCanEdit` to `gatePredicates.ts`, then wire state, handler, button, and
 
 #### Automated
 
-- [x] 1.1 Rules deploy without error: `firebase deploy --only firestore:rules`
+- [x] 1.1 Rules deploy without error: `firebase deploy --only firestore:rules` — f5ec250
 
 #### Manual
 
-- [x] 1.2 Firebase Console simulator: 49-char reflection update denied; 50-char allowed for author
+- [x] 1.2 Firebase Console simulator: 49-char reflection update denied; 50-char allowed for author — f5ec250
 
 ### Phase 2: Predicate, Handler, and Edit Panel UI
 
 #### Automated
 
-- [ ] 2.1 TypeScript type check passes: `npx tsc --noEmit`
-- [ ] 2.2 No lint errors: `npm run lint`
+- [x] 2.1 TypeScript type check passes: `npx tsc --noEmit`
+- [x] 2.2 No lint errors: `npm run lint`
 
 #### Manual
 
-- [ ] 2.3 Author sees "Edit" button; other users do not
-- [ ] 2.4 Opening Edit closes Comments and Follow-Up panels
-- [ ] 2.5 Edit panel pre-populates with current reflection
-- [ ] 2.6 50-char gate enforced: Save disabled below threshold, counter turns green at 50
-- [ ] 2.7 Save writes update and closes panel; card re-renders via real-time listener
-- [ ] 2.8 Firestore error surfaces inline error, leaves panel open
-- [ ] 2.9 Cancel clears state without writing to Firestore
-- [ ] 2.10 No regressions in Comments, Follow-Up, or Delete flows
+- [x] 2.3 Author sees "Edit" button; other users do not
+- [x] 2.4 Opening Edit closes Comments and Follow-Up panels
+- [x] 2.5 Edit panel pre-populates with current reflection
+- [x] 2.6 50-char gate enforced: Save disabled below threshold, counter turns green at 50
+- [x] 2.7 Save writes update and closes panel; card re-renders via real-time listener
+- [x] 2.8 Firestore error surfaces inline error, leaves panel open
+- [x] 2.9 Cancel clears state without writing to Firestore
+- [x] 2.10 No regressions in Comments, Follow-Up, or Delete flows
