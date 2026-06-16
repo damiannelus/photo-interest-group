@@ -1,22 +1,22 @@
-import { useEffect, useRef, useState } from "react";
+import { useMemo, useRef, useState, useEffect } from "react";
 import { Link } from "react-router";
 import {
   addDoc,
   collection,
   deleteDoc,
   doc,
-  getCountFromServer,
-  onSnapshot,
-  orderBy,
-  query,
   serverTimestamp,
-  where,
 } from "firebase/firestore";
 import { db } from "~/firebase";
 import { useAuth } from "~/context/auth";
 import type { Challenge } from "~/types/challenge";
 import type { Comment } from "~/types/comment";
 import type { Submission } from "~/types/submission";
+import { buildSubmissionTree } from "~/lib/submissionTree";
+import { checkCanPost, checkCanSubmit, checkCanFollowUp } from "~/lib/gatePredicates";
+import { useComments } from "~/hooks/useComments";
+import { useChallengeSubmissions } from "~/hooks/useChallengeSubmissions";
+import { useActiveChallenges } from "~/hooks/useActiveChallenges";
 
 // ---------------------------------------------------------------------------
 // SubmissionCard — manages its own comment listener and form state
@@ -28,9 +28,7 @@ function SubmissionCard({ submission }: { submission: Submission }) {
   useEffect(() => () => { mountedRef.current = false; }, []);
 
   const [commentOpen, setCommentOpen] = useState(false);
-  const [commentCount, setCommentCount] = useState(0);
-  const [comments, setComments] = useState<Comment[]>([]);
-  const [commentsLoading, setCommentsLoading] = useState(false);
+  const { comments, commentCount, commentsLoading, loadError } = useComments(submission.id, commentOpen);
   const [commentText, setCommentText] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -41,42 +39,8 @@ function SubmissionCard({ submission }: { submission: Submission }) {
   const [fuSubmitting, setFuSubmitting] = useState(false);
   const [fuError, setFuError] = useState<string | null>(null);
 
-  const canPost = commentText.trim().length >= 10 && !submitting;
-  const canFollowUp = fuPhotoUrl.trim().length > 0 && fuReflection.trim().length >= 50 && !fuSubmitting;
-
-  // Fetch initial count on mount so the badge is populated before expanding
-  useEffect(() => {
-    getCountFromServer(collection(db, "submissions", submission.id, "comments"))
-      .then((snap) => {
-        if (mountedRef.current) setCommentCount(snap.data().count);
-      })
-      .catch(() => {
-        // Non-critical; count stays 0 on error
-      });
-  }, [submission.id]);
-
-  // Wire/unwire the real-time listener when the toggle changes
-  useEffect(() => {
-    if (!commentOpen) return;
-    setCommentsLoading(true);
-    const q = query(
-      collection(db, "submissions", submission.id, "comments"),
-      orderBy("createdAt", "asc")
-    );
-    const unsub = onSnapshot(
-      q,
-      (snap) => {
-        setComments(snap.docs.map((d) => ({ id: d.id, ...d.data() }) as Comment));
-        setCommentCount(snap.size);
-        setCommentsLoading(false);
-      },
-      (_err) => {
-        setCommentsLoading(false);
-        setSubmitError("Failed to load comments. Please refresh.");
-      }
-    );
-    return unsub;
-  }, [commentOpen, submission.id]);
+  const canPost = checkCanPost(commentText, submitting);
+  const canFollowUp = checkCanFollowUp(!!user, fuPhotoUrl, fuReflection, fuSubmitting);
 
   async function handlePost(e: React.FormEvent) {
     e.preventDefault();
@@ -233,7 +197,7 @@ function SubmissionCard({ submission }: { submission: Submission }) {
                 placeholder="Paste a hosted HTTPS image URL"
                 className="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
               />
-              {fuPhotoUrl.trim().length > 0 && (
+              {fuPhotoUrl.trim().startsWith("https://") && (
                 <img
                   src={fuPhotoUrl}
                   alt="Preview"
@@ -352,9 +316,9 @@ function SubmissionCard({ submission }: { submission: Submission }) {
             >
               {commentText.trim().length} / 10 characters
             </p>
-            {submitError && (
+            {(loadError ?? submitError) && (
               <p className="text-sm text-red-600 dark:text-red-400">
-                {submitError}
+                {loadError ?? submitError}
               </p>
             )}
             <button
@@ -372,23 +336,8 @@ function SubmissionCard({ submission }: { submission: Submission }) {
 }
 
 // ---------------------------------------------------------------------------
-// buildSubmissionTree / SubmissionList — tree renderer helpers
+// SubmissionList — tree renderer helper
 // ---------------------------------------------------------------------------
-
-function buildSubmissionTree(submissions: Submission[]): Map<string | null, Submission[]> {
-  const map = new Map<string | null, Submission[]>();
-  for (const s of submissions) {
-    const key = s.parent_submission_id ?? null;
-    if (!map.has(key)) map.set(key, []);
-    map.get(key)!.push(s);
-  }
-  for (const [key, group] of map) {
-    if (key !== null) {
-      group.sort((a, b) => (a.createdAt?.toMillis() ?? 0) - (b.createdAt?.toMillis() ?? 0));
-    }
-  }
-  return map;
-}
 
 function SubmissionList({
   parentId,
@@ -399,6 +348,7 @@ function SubmissionList({
   byParent: Map<string | null, Submission[]>;
   depth: number;
 }) {
+  if (depth > 3) return null;
   const group = byParent.get(parentId);
   if (!group || group.length === 0) return null;
   return (
@@ -409,7 +359,7 @@ function SubmissionList({
           <SubmissionList
             parentId={sub.id}
             byParent={byParent}
-            depth={Math.min(depth + 1, 3)}
+            depth={depth + 1}
           />
         </div>
       ))}
@@ -430,9 +380,9 @@ function ChallengeCard({ challenge }: ChallengeCardProps) {
   const mountedRef = useRef(true);
   useEffect(() => () => { mountedRef.current = false; }, []);
 
-  const [submissions, setSubmissions] = useState<Submission[]>([]);
-  const [subsLoading, setSubsLoading] = useState(true);
-  const [subsError, setSubsError] = useState<string | null>(null);
+  const { submissions, subsLoading, subsError } = useChallengeSubmissions(challenge.id);
+  const subTree = useMemo(() => buildSubmissionTree(submissions), [submissions]);
+  const rootCount = submissions.filter((s) => (s.parent_submission_id ?? null) === null).length;
 
   const [formOpen, setFormOpen] = useState(false);
   const [photoUrl, setPhotoUrl] = useState("");
@@ -440,10 +390,7 @@ function ChallengeCard({ challenge }: ChallengeCardProps) {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
-  const canSubmit =
-    photoUrl.trim().length > 0 &&
-    reflection.trim().length >= 50 &&
-    !submitting;
+  const canSubmit = checkCanSubmit(photoUrl, reflection, submitting);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -476,39 +423,14 @@ function ChallengeCard({ challenge }: ChallengeCardProps) {
       setPhotoUrl("");
       setReflection("");
       setFormOpen(false);
+      setSubmitting(false);
     } catch (err) {
       console.error("Submission failed:", err);
+      if (!mountedRef.current) return;
       setSubmitError("Failed to publish. Please try again.");
       setSubmitting(false);
     }
   }
-
-  useEffect(() => {
-    const q = query(
-      collection(db, "submissions"),
-      where("challengeId", "==", challenge.id),
-      orderBy("createdAt", "desc")
-    );
-
-    const unsub = onSnapshot(
-      q,
-      (snap) => {
-        setSubmissions(
-          snap.docs.map(
-            (doc) => ({ id: doc.id, ...doc.data() }) as Submission
-          )
-        );
-        setSubsError(null);
-        setSubsLoading(false);
-      },
-      (_err) => {
-        setSubsError("Failed to load submissions. Please refresh.");
-        setSubsLoading(false);
-      }
-    );
-
-    return unsub;
-  }, [challenge.id]);
 
   return (
     <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-6 mb-6 bg-white dark:bg-gray-900">
@@ -549,7 +471,7 @@ function ChallengeCard({ challenge }: ChallengeCardProps) {
               required
               className="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            {photoUrl.trim().length > 0 && (
+            {photoUrl.trim().startsWith("https://") && (
               <img
                 src={photoUrl}
                 alt="Preview"
@@ -624,8 +546,8 @@ function ChallengeCard({ challenge }: ChallengeCardProps) {
         ) : (
           <>
             <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">
-              {submissions.length} submission
-              {submissions.length !== 1 ? "s" : ""}
+              {rootCount} submission
+              {rootCount !== 1 ? "s" : ""}
             </p>
 
             {submissions.length === 0 ? (
@@ -635,7 +557,7 @@ function ChallengeCard({ challenge }: ChallengeCardProps) {
             ) : (
               <SubmissionList
                 parentId={null}
-                byParent={buildSubmissionTree(submissions)}
+                byParent={subTree}
                 depth={0}
               />
             )}
@@ -651,36 +573,7 @@ function ChallengeCard({ challenge }: ChallengeCardProps) {
 // ---------------------------------------------------------------------------
 
 export default function ChallengeFeed() {
-  const [challenges, setChallenges] = useState<Challenge[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const q = query(
-      collection(db, "challenges"),
-      where("status", "==", "active"),
-      orderBy("createdAt", "desc")
-    );
-
-    const unsub = onSnapshot(
-      q,
-      (snap) => {
-        setChallenges(
-          snap.docs.map(
-            (doc) => ({ id: doc.id, ...doc.data() }) as Challenge
-          )
-        );
-        setError(null);
-        setLoading(false);
-      },
-      (_err) => {
-        setError("Failed to load challenges. Please refresh.");
-        setLoading(false);
-      }
-    );
-
-    return unsub;
-  }, []);
+  const { challenges, loading, error } = useActiveChallenges();
 
   return (
     <div className="max-w-2xl mx-auto py-8 px-4">
