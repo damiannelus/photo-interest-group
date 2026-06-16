@@ -39,6 +39,7 @@ function SubmissionCard({ submission }: { submission: Submission }) {
   const [fuSubmitting, setFuSubmitting] = useState(false);
   const [fuError, setFuError] = useState<string | null>(null);
   const [deleteError, setDeleteError] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const canPost = checkCanPost(commentText, submitting);
   const canFollowUp = checkCanFollowUp(!!user, fuPhotoUrl, fuReflection, fuSubmitting);
@@ -123,11 +124,14 @@ function SubmissionCard({ submission }: { submission: Submission }) {
 
   async function handleDeleteSubmission() {
     if (!window.confirm("Delete this submission? This cannot be undone.")) return;
+    setIsDeleting(true);
     try {
+      setDeleteError(null);
       await deleteDoc(doc(db, "submissions", submission.id));
     } catch (err) {
       console.error("Submission delete failed:", err);
       if (!mountedRef.current) return;
+      setIsDeleting(false);
       setDeleteError("Failed to delete. Please try again.");
     }
   }
@@ -173,9 +177,10 @@ function SubmissionCard({ submission }: { submission: Submission }) {
           <button
             type="button"
             onClick={handleDeleteSubmission}
-            className="text-xs text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 text-left"
+            disabled={isDeleting}
+            className="text-xs text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 disabled:opacity-50 disabled:cursor-not-allowed text-left"
           >
-            Delete
+            {isDeleting ? "Deleting…" : "Delete"}
           </button>
         )}
       </div>
