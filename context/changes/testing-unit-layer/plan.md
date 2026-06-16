@@ -320,25 +320,25 @@ None in this phase. Phase 2 (Firestore emulator) covers cross-boundary integrati
 
 #### Automated
 
-- [x] 1.1 `npm test` exits 0 (Vitest runs with no test files found)
-- [x] 1.2 `npm run typecheck` still passes after adding vitest.config.ts
+- [x] 1.1 `npm test` exits 0 (Vitest runs with no test files found) — 229a79b
+- [x] 1.2 `npm run typecheck` still passes after adding vitest.config.ts — 229a79b
 
 #### Manual
 
-- [x] 1.3 Terminal shows Vitest summary (not a config or resolution error)
+- [x] 1.3 Terminal shows Vitest summary (not a config or resolution error) — 229a79b
 
 ### Phase 2: Extract Pure Utilities and Write Their Tests
 
 #### Automated
 
-- [ ] 2.1 `npm test` passes all tests in submissionTree.test.ts
-- [ ] 2.2 `npm test` passes all tests in gatePredicates.test.ts
-- [ ] 2.3 `npm test` passes all tests in allowedEmails.test.ts
-- [ ] 2.4 `npm run typecheck` passes after challenges.tsx import updates
+- [x] 2.1 `npm test` passes all tests in submissionTree.test.ts
+- [x] 2.2 `npm test` passes all tests in gatePredicates.test.ts
+- [x] 2.3 `npm test` passes all tests in allowedEmails.test.ts
+- [x] 2.4 `npm run typecheck` passes after challenges.tsx import updates
 
 #### Manual
 
-- [ ] 2.5 Gate predicate live behaviour verified in dev server (9-char comment stays disabled, 10 enables)
+- [x] 2.5 Gate predicate live behaviour verified in dev server (9-char comment stays disabled, 10 enables)
 
 ### Phase 3: Extract Custom Hooks and Write Cleanup Tests
 

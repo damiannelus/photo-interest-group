@@ -17,6 +17,8 @@ import { useAuth } from "~/context/auth";
 import type { Challenge } from "~/types/challenge";
 import type { Comment } from "~/types/comment";
 import type { Submission } from "~/types/submission";
+import { buildSubmissionTree } from "~/lib/submissionTree";
+import { checkCanPost, checkCanSubmit, checkCanFollowUp } from "~/lib/gatePredicates";
 
 // ---------------------------------------------------------------------------
 // SubmissionCard — manages its own comment listener and form state
@@ -41,8 +43,8 @@ function SubmissionCard({ submission }: { submission: Submission }) {
   const [fuSubmitting, setFuSubmitting] = useState(false);
   const [fuError, setFuError] = useState<string | null>(null);
 
-  const canPost = commentText.trim().length >= 10 && !submitting;
-  const canFollowUp = !!user && fuPhotoUrl.trim().length > 0 && fuReflection.trim().length >= 50 && !fuSubmitting;
+  const canPost = checkCanPost(commentText, submitting);
+  const canFollowUp = checkCanFollowUp(!!user, fuPhotoUrl, fuReflection, fuSubmitting);
 
   // Fetch initial count on mount so the badge is populated before expanding
   useEffect(() => {
@@ -372,25 +374,8 @@ function SubmissionCard({ submission }: { submission: Submission }) {
 }
 
 // ---------------------------------------------------------------------------
-// buildSubmissionTree / SubmissionList — tree renderer helpers
+// SubmissionList — tree renderer helper
 // ---------------------------------------------------------------------------
-
-function buildSubmissionTree(submissions: Submission[]): Map<string | null, Submission[]> {
-  const map = new Map<string | null, Submission[]>();
-  for (const s of submissions) {
-    const key = s.parent_submission_id ?? null;
-    if (!map.has(key)) map.set(key, []);
-    map.get(key)!.push(s);
-  }
-  // Root submissions (key === null) keep Firestore query order (desc by createdAt).
-  // Child groups are sorted asc so follow-up chains read chronologically.
-  for (const [key, group] of map) {
-    if (key !== null) {
-      group.sort((a, b) => (a.createdAt?.toMillis() ?? 0) - (b.createdAt?.toMillis() ?? 0));
-    }
-  }
-  return map;
-}
 
 function SubmissionList({
   parentId,
@@ -445,10 +430,7 @@ function ChallengeCard({ challenge }: ChallengeCardProps) {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
-  const canSubmit =
-    photoUrl.trim().length > 0 &&
-    reflection.trim().length >= 50 &&
-    !submitting;
+  const canSubmit = checkCanSubmit(photoUrl, reflection, submitting);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
