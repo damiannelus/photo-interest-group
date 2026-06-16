@@ -205,6 +205,7 @@ function SubmissionCard({ submission }: { submission: Submission }) {
             type="button"
             onClick={() => {
               setEditReflection(submission.reflection);
+              setEditError(null);
               setEditOpen((v) => !v);
               setCommentOpen(false);
               setFollowUpOpen(false);
