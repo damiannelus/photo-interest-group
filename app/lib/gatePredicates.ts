@@ -27,3 +27,7 @@ export function checkCanFollowUp(
     !submitting
   );
 }
+
+export function checkCanEdit(reflection: string, submitting: boolean): boolean {
+  return reflection.trim().length >= 50 && !submitting;
+}

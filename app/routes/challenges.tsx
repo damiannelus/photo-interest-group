@@ -6,6 +6,7 @@ import {
   deleteDoc,
   doc,
   serverTimestamp,
+  updateDoc,
 } from "firebase/firestore";
 import { db } from "~/firebase";
 import { useAuth } from "~/context/auth";
@@ -13,7 +14,7 @@ import type { Challenge } from "~/types/challenge";
 import type { Comment } from "~/types/comment";
 import type { Submission } from "~/types/submission";
 import { buildSubmissionTree } from "~/lib/submissionTree";
-import { checkCanPost, checkCanSubmit, checkCanFollowUp } from "~/lib/gatePredicates";
+import { checkCanPost, checkCanSubmit, checkCanFollowUp, checkCanEdit } from "~/lib/gatePredicates";
 import { useComments } from "~/hooks/useComments";
 import { useChallengeSubmissions } from "~/hooks/useChallengeSubmissions";
 import { useActiveChallenges } from "~/hooks/useActiveChallenges";
@@ -38,9 +39,17 @@ function SubmissionCard({ submission }: { submission: Submission }) {
   const [fuReflection, setFuReflection] = useState("");
   const [fuSubmitting, setFuSubmitting] = useState(false);
   const [fuError, setFuError] = useState<string | null>(null);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const [editOpen, setEditOpen] = useState(false);
+  const [editReflection, setEditReflection] = useState("");
+  const [editSubmitting, setEditSubmitting] = useState(false);
+  const [editError, setEditError] = useState<string | null>(null);
 
   const canPost = checkCanPost(commentText, submitting);
   const canFollowUp = checkCanFollowUp(!!user, fuPhotoUrl, fuReflection, fuSubmitting);
+  const canEdit = checkCanEdit(editReflection, editSubmitting);
 
   async function handlePost(e: React.FormEvent) {
     e.preventDefault();
@@ -120,6 +129,40 @@ function SubmissionCard({ submission }: { submission: Submission }) {
     }
   }
 
+  async function handleDeleteSubmission() {
+    if (!window.confirm("Delete this submission? This cannot be undone.")) return;
+    setIsDeleting(true);
+    try {
+      setDeleteError(null);
+      await deleteDoc(doc(db, "submissions", submission.id));
+    } catch (err) {
+      console.error("Submission delete failed:", err);
+      if (!mountedRef.current) return;
+      setIsDeleting(false);
+      setDeleteError("Failed to delete. Please try again.");
+    }
+  }
+
+  async function handleEditReflection(e: React.FormEvent) {
+    e.preventDefault();
+    if (!canEdit || !user) return;
+    setEditSubmitting(true);
+    setEditError(null);
+    try {
+      await updateDoc(doc(db, "submissions", submission.id), {
+        reflection: editReflection.trim(),
+      });
+      if (!mountedRef.current) return;
+      setEditOpen(false);
+      setEditSubmitting(false);
+    } catch (err) {
+      console.error("Reflection edit failed:", err);
+      if (!mountedRef.current) return;
+      setEditError("Failed to save. Please try again.");
+      setEditSubmitting(false);
+    }
+  }
+
   return (
     <div className="flex flex-col gap-2 py-3 border-t border-gray-100 dark:border-gray-800">
       {/* Submission display */}
@@ -157,7 +200,82 @@ function SubmissionCard({ submission }: { submission: Submission }) {
             {followUpOpen ? "Cancel Follow-Up" : "Follow-Up"}
           </button>
         )}
+        {user?.uid === submission.authorUid && (
+          <button
+            type="button"
+            onClick={() => {
+              setEditReflection(submission.reflection);
+              setEditError(null);
+              setEditOpen((v) => !v);
+              setCommentOpen(false);
+              setFollowUpOpen(false);
+            }}
+            className="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 text-left"
+          >
+            {editOpen ? "Cancel Edit" : "Edit"}
+          </button>
+        )}
+        {user?.uid === submission.authorUid && (
+          <button
+            type="button"
+            onClick={handleDeleteSubmission}
+            disabled={isDeleting}
+            className="text-xs text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 disabled:opacity-50 disabled:cursor-not-allowed text-left"
+          >
+            {isDeleting ? "Deleting…" : "Delete"}
+          </button>
+        )}
       </div>
+      {deleteError && (
+        <p className="text-sm text-red-600 dark:text-red-400">{deleteError}</p>
+      )}
+
+      {/* Edit reflection form */}
+      {editOpen && (
+        <div className="mt-3 pt-3 border-t border-gray-100 dark:border-gray-800">
+          <form onSubmit={handleEditReflection} className="space-y-3">
+            <div>
+              <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Edit Reflection
+              </label>
+              <textarea
+                value={editReflection}
+                onChange={(e) => setEditReflection(e.target.value)}
+                rows={3}
+                className="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+              />
+              <p
+                className={
+                  editReflection.trim().length >= 50
+                    ? "text-xs text-green-600 dark:text-green-400"
+                    : "text-xs text-gray-400 dark:text-gray-500"
+                }
+              >
+                {editReflection.trim().length} / 50 characters
+              </p>
+            </div>
+            {editError && (
+              <p className="text-sm text-red-600 dark:text-red-400">{editError}</p>
+            )}
+            <div className="flex items-center gap-3">
+              <button
+                type="submit"
+                disabled={!canEdit}
+                className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs font-medium px-3 py-1.5 rounded"
+              >
+                {editSubmitting ? "Saving…" : "Save"}
+              </button>
+              <button
+                type="button"
+                onClick={() => { setEditOpen(false); setEditReflection(""); setEditError(null); }}
+                className="text-xs text-gray-500 dark:text-gray-400 hover:underline"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
 
       {/* Follow-up form */}
       {followUpOpen && (
