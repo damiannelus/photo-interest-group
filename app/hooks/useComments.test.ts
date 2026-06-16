@@ -10,7 +10,7 @@ vi.mock("firebase/firestore", () => ({
   onSnapshot: vi.fn(),
 }));
 
-import { onSnapshot } from "firebase/firestore";
+import { onSnapshot, getCountFromServer } from "firebase/firestore";
 import { useComments } from "./useComments";
 
 describe("useComments", () => {
@@ -55,5 +55,23 @@ describe("useComments", () => {
 
     rerender({ open: false });
     expect(unsubSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it("does not call setCommentCount after unmount (cancelled promise)", async () => {
+    let resolveCount!: (value: { data: () => { count: number } }) => void;
+    const deferred = new Promise<{ data: () => { count: number } }>(
+      (resolve) => { resolveCount = resolve; }
+    );
+    vi.mocked(getCountFromServer).mockReturnValue(deferred as any);
+
+    const { unmount, result } = renderHook(() => useComments("sub-1", false));
+    unmount();
+
+    // Resolve after unmount — the cancelled flag must suppress the setState
+    resolveCount({ data: () => ({ count: 42 }) });
+    await deferred;
+
+    // commentCount must remain 0 (the initial value), not 42
+    expect(result.current.commentCount).toBe(0);
   });
 });

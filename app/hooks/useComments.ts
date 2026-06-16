@@ -25,11 +25,13 @@ export function useComments(
 
   // Seed badge count on mount before the subscription opens
   useEffect(() => {
+    let cancelled = false;
     getCountFromServer(collection(db, "submissions", submissionId, "comments"))
-      .then((snap) => setCommentCount(snap.data().count))
+      .then((snap) => { if (!cancelled) setCommentCount(snap.data().count); })
       .catch(() => {
         // Non-critical; count stays 0 on error
       });
+    return () => { cancelled = true; };
   }, [submissionId]);
 
   // Wire/unwire the real-time listener when the toggle changes

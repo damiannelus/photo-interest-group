@@ -426,6 +426,7 @@ function ChallengeCard({ challenge }: ChallengeCardProps) {
       setSubmitting(false);
     } catch (err) {
       console.error("Submission failed:", err);
+      if (!mountedRef.current) return;
       setSubmitError("Failed to publish. Please try again.");
       setSubmitting(false);
     }
