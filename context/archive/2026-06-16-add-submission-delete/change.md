@@ -1,10 +1,10 @@
 ---
 change_id: add-submission-delete
 title: Add submission delete
-status: impl_reviewed
+status: archived
 created: 2026-06-16
 updated: 2026-06-16
-archived_at: null
+archived_at: 2026-06-16T07:01:29Z
 ---
 
 ## Notes
