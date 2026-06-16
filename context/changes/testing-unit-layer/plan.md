@@ -344,12 +344,12 @@ None in this phase. Phase 2 (Firestore emulator) covers cross-boundary integrati
 
 #### Automated
 
-- [x] 3.1 `npm test` passes all tests in useActiveChallenges.test.ts
-- [x] 3.2 `npm test` passes all tests in useChallengeSubmissions.test.ts
-- [x] 3.3 `npm test` passes all tests in useComments.test.ts
-- [x] 3.4 `npm run typecheck` passes after hook extraction
+- [x] 3.1 `npm test` passes all tests in useActiveChallenges.test.ts — a2c53bd
+- [x] 3.2 `npm test` passes all tests in useChallengeSubmissions.test.ts — a2c53bd
+- [x] 3.3 `npm test` passes all tests in useComments.test.ts — a2c53bd
+- [x] 3.4 `npm run typecheck` passes after hook extraction — a2c53bd
 
 #### Manual
 
-- [x] 3.5 Dev server: challenges load, submissions load, comment toggle works without errors
-- [x] 3.6 `context/foundation/test-plan.md` §3 Phase 1 status updated to `complete`
+- [x] 3.5 Dev server: challenges load, submissions load, comment toggle works without errors — a2c53bd
+- [x] 3.6 `context/foundation/test-plan.md` §3 Phase 1 status updated to `complete` — a2c53bd
