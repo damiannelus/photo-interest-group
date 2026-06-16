@@ -38,6 +38,7 @@ function SubmissionCard({ submission }: { submission: Submission }) {
   const [fuReflection, setFuReflection] = useState("");
   const [fuSubmitting, setFuSubmitting] = useState(false);
   const [fuError, setFuError] = useState<string | null>(null);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
 
   const canPost = checkCanPost(commentText, submitting);
   const canFollowUp = checkCanFollowUp(!!user, fuPhotoUrl, fuReflection, fuSubmitting);
@@ -120,6 +121,17 @@ function SubmissionCard({ submission }: { submission: Submission }) {
     }
   }
 
+  async function handleDeleteSubmission() {
+    if (!window.confirm("Delete this submission? This cannot be undone.")) return;
+    try {
+      await deleteDoc(doc(db, "submissions", submission.id));
+    } catch (err) {
+      console.error("Submission delete failed:", err);
+      if (!mountedRef.current) return;
+      setDeleteError("Failed to delete. Please try again.");
+    }
+  }
+
   return (
     <div className="flex flex-col gap-2 py-3 border-t border-gray-100 dark:border-gray-800">
       {/* Submission display */}
@@ -157,7 +169,19 @@ function SubmissionCard({ submission }: { submission: Submission }) {
             {followUpOpen ? "Cancel Follow-Up" : "Follow-Up"}
           </button>
         )}
+        {user?.uid === submission.authorUid && (
+          <button
+            type="button"
+            onClick={handleDeleteSubmission}
+            className="text-xs text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 text-left"
+          >
+            Delete
+          </button>
+        )}
       </div>
+      {deleteError && (
+        <p className="text-sm text-red-600 dark:text-red-400">{deleteError}</p>
+      )}
 
       {/* Follow-up form */}
       {followUpOpen && (
