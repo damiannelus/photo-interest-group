@@ -6,7 +6,7 @@
     "build": "react-router build",
     "dev": "react-router dev",
     "typecheck": "react-router typegen && tsc",
-    "test": "vitest run --passWithNoTests",
+    "test": "vitest run --passWithNoTests app/",
     "test:watch": "vitest",
     "test:rules": "vitest run tests/rules",
     "test:rules:emulator": "firebase emulators:exec --only firestore \"vitest run tests/rules\""
