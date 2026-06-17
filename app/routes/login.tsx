@@ -1,4 +1,4 @@
-import { GoogleAuthProvider, getRedirectResult, signInWithRedirect, signOut } from "firebase/auth";
+import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import RejectionScreen from "~/components/RejectionScreen";
@@ -11,21 +11,6 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const [rejected, setRejected] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    getRedirectResult(auth).then((result) => {
-      if (!result) return;
-      const email = result.user.email?.toLowerCase() ?? "";
-      if (allowedEmails.includes(email)) {
-        navigate("/");
-      } else {
-        signOut(auth);
-        setRejected(true);
-      }
-    }).catch(() => {
-      setError("Sign-in failed. Please try again.");
-    });
-  }, [navigate]);
 
   useEffect(() => {
     if (!loading && user) {
@@ -42,7 +27,16 @@ export default function LoginPage() {
 
   async function handleSignIn() {
     setError(null);
-    await signInWithRedirect(auth, new GoogleAuthProvider());
+    try {
+      const result = await signInWithPopup(auth, new GoogleAuthProvider());
+      const email = result.user.email?.toLowerCase() ?? "";
+      if (!allowedEmails.includes(email)) {
+        await signOut(auth);
+        setRejected(true);
+      }
+    } catch {
+      setError("Sign-in failed. Please try again.");
+    }
   }
 
   return (
