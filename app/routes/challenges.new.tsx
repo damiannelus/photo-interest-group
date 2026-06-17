@@ -4,6 +4,9 @@ import { Link, useNavigate } from "react-router";
 import { useAuth } from "~/context/auth";
 import { db } from "~/firebase";
 
+const inputClass =
+  "w-full bg-bg-base border border-border rounded-input px-3 py-2 text-sm text-text-primary placeholder:text-text-faint focus:outline-none focus:ring-1 focus:ring-accent";
+
 export default function NewChallengePage() {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -18,10 +21,8 @@ export default function NewChallengePage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!canSubmit || !user) return;
-
     setSubmitting(true);
     setError(null);
-
     try {
       await addDoc(collection(db, "challenges"), {
         title: title.trim(),
@@ -40,27 +41,25 @@ export default function NewChallengePage() {
 
   return (
     <div className="max-w-2xl mx-auto py-8 px-4">
-      {/* Page header */}
       <div className="flex items-center justify-between mb-8">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+        <h1 className="text-2xl font-semibold text-text-primary tracking-tight">
           New Challenge
         </h1>
         <Link
           to="/"
-          className="text-sm text-gray-500 dark:text-gray-400 hover:underline"
+          className="text-sm text-text-secondary hover:text-text-primary transition-colors"
         >
           Back to challenges
         </Link>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Title field */}
+      <form onSubmit={handleSubmit} className="flex flex-col gap-6">
         <div>
           <label
             htmlFor="title"
-            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+            className="block text-xs font-medium text-text-secondary mb-1"
           >
-            Title <span className="text-red-500">*</span>
+            Title <span className="text-error">*</span>
           </label>
           <input
             id="title"
@@ -69,20 +68,17 @@ export default function NewChallengePage() {
             onChange={(e) => setTitle(e.target.value)}
             placeholder="e.g. Golden Hour"
             required
-            className="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className={inputClass}
           />
         </div>
 
-        {/* Description field */}
         <div>
           <label
             htmlFor="description"
-            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+            className="block text-xs font-medium text-text-secondary mb-1"
           >
             Description{" "}
-            <span className="text-gray-400 dark:text-gray-500 font-normal">
-              (optional)
-            </span>
+            <span className="text-text-faint font-normal">(optional)</span>
           </label>
           <textarea
             id="description"
@@ -90,27 +86,23 @@ export default function NewChallengePage() {
             onChange={(e) => setDescription(e.target.value)}
             placeholder="What should members photograph?"
             rows={4}
-            className="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y"
+            className={`${inputClass} resize-y`}
           />
         </div>
 
-        {/* Error message */}
-        {error && (
-          <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
-        )}
+        {error && <p className="text-sm text-error">{error}</p>}
 
-        {/* Actions */}
         <div className="flex items-center gap-4">
           <button
             type="submit"
             disabled={!canSubmit}
-            className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-medium px-4 py-2 rounded"
+            className="bg-accent text-white text-sm font-medium px-4 py-2 rounded-input hover:opacity-90 disabled:opacity-40 transition-opacity"
           >
             {submitting ? "Creating…" : "Create Challenge"}
           </button>
           <Link
             to="/"
-            className="text-sm text-gray-500 dark:text-gray-400 hover:underline"
+            className="text-sm text-text-secondary hover:text-text-primary transition-colors"
           >
             Cancel
           </Link>

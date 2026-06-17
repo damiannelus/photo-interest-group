@@ -27,7 +27,10 @@ interface Props {
 export default function SubmissionCard({ submission, childSubmissions }: Props) {
   const { user } = useAuth();
   const mountedRef = useRef(true);
-  useEffect(() => () => { mountedRef.current = false; }, []);
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => { mountedRef.current = false; };
+  }, []);
 
   const [commentOpen, setCommentOpen] = useState(false);
   const { comments, commentCount, commentsLoading, loadError } = useComments(submission.id, commentOpen);

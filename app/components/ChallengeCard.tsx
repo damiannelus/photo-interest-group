@@ -21,7 +21,10 @@ interface Props {
 export default function ChallengeCard({ challenge }: Props) {
   const { user } = useAuth();
   const mountedRef = useRef(true);
-  useEffect(() => () => { mountedRef.current = false; }, []);
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => { mountedRef.current = false; };
+  }, []);
 
   const { submissions, subsLoading, subsError } = useChallengeSubmissions(challenge.id);
   const subTree = useMemo(() => buildSubmissionTree(submissions), [submissions]);

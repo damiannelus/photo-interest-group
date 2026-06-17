@@ -414,24 +414,24 @@ Slim the route files down to imports + page-level layout. Restyle the `challenge
 ### Phase 4: Component Extraction + Card Redesign
 
 #### Automated
-- [x] 4.1 `npm run typecheck` passes — all new component files type-check
-- [x] 4.2 `npm run build` succeeds
+- [x] 4.1 `npm run typecheck` passes — all new component files type-check — fd9f4b0
+- [x] 4.2 `npm run build` succeeds — fd9f4b0
 
 #### Manual
-- [x] 4.3 Submission photos display at full-width aspect-video ratio
-- [x] 4.4 Grid is 3 cols desktop / 2 cols tablet / 1 col mobile
-- [x] 4.5 "↩ N follow-ups" badge appears and accordion works
-- [x] 4.6 Character counter turns accent-dim color at threshold
-- [x] 4.7 No `w-16 h-16` thumbnails remain anywhere
+- [x] 4.3 Submission photos display at full-width aspect-video ratio — fd9f4b0
+- [x] 4.4 Grid is 3 cols desktop / 2 cols tablet / 1 col mobile — fd9f4b0
+- [x] 4.5 "↩ N follow-ups" badge appears and accordion works — fd9f4b0
+- [x] 4.6 Character counter turns accent-dim color at threshold — fd9f4b0
+- [x] 4.7 No `w-16 h-16` thumbnails remain anywhere — fd9f4b0
 
 ### Phase 5: Route Cleanup
 
 #### Automated
-- [ ] 5.1 `npm run typecheck` passes
-- [ ] 5.2 `npm run build` succeeds — no dead import warnings
-- [ ] 5.3 `grep -r "welcome" app/` returns no matches
+- [x] 5.1 `npm run typecheck` passes
+- [x] 5.2 `npm run build` succeeds — no dead import warnings
+- [x] 5.3 `grep -r "welcome" app/` returns no matches
 
 #### Manual
-- [ ] 5.4 Full MVP flow works end-to-end (sign in → submit → follow-up → comment)
-- [ ] 5.5 `challenges.tsx` is under 80 lines
-- [ ] 5.6 No `bg-blue-600`, `dark:`, or inline `style={{` strings remain in `app/`
+- [x] 5.4 Full MVP flow works end-to-end (sign in → submit → follow-up → comment)
+- [x] 5.5 `challenges.tsx` is under 80 lines
+- [x] 5.6 No `bg-blue-600`, `dark:`, or inline `style={{` strings remain in `app/`
