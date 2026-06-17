@@ -9,7 +9,7 @@
     "test": "vitest run --passWithNoTests app/",
     "test:watch": "vitest",
     "test:rules": "vitest run tests/rules",
-    "test:rules:emulator": "firebase emulators:exec --only firestore \"vitest run tests/rules\""
+    "test:rules:emulator": "firebase emulators:exec --only firestore --project demo-photo-interest-group \"vitest run tests/rules\""
   },
   "dependencies": {
     "@react-router/node": "7.16.0",

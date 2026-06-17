@@ -193,20 +193,20 @@ No env vars on these steps — all VITE_* secrets remain on the `npm run build` 
 
 #### Automated
 
-- [x] 1.1 `context/changes/2026-06-16-firestore-rules-phase2/change.md` exists with `status: complete`
-- [x] 1.2 `test-plan.md` Phase 2 row reads `complete`
+- [x] 1.1 `context/changes/2026-06-16-firestore-rules-phase2/change.md` exists with `status: complete` — 0d6c5da
+- [x] 1.2 `test-plan.md` Phase 2 row reads `complete` — 0d6c5da
 
 #### Manual
 
-- [x] 1.3 Test-plan §3 table renders correctly
+- [x] 1.3 Test-plan §3 table renders correctly — 0d6c5da
 
 ### Phase 2: CI Quality Gate Wiring
 
 #### Automated
 
-- [ ] 2.1 `npm test` exits 0 locally
+- [x] 2.1 `npm test` exits 0 locally
 - [ ] 2.2 `npm run test:rules:emulator` exits 0 locally with demo-project flag
-- [ ] 2.3 Both workflow YAML files have the three new steps after typecheck, before build
+- [x] 2.3 Both workflow YAML files have the three new steps after typecheck, before build
 
 #### Manual
 
