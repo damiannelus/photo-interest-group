@@ -404,25 +404,25 @@ Slim the route files down to imports + page-level layout. Restyle the `challenge
 ### Phase 3: Auth Screens + Root Loading States
 
 #### Automated
-- [x] 3.1 `npm run typecheck` passes
+- [x] 3.1 `npm run typecheck` passes — c2607ef
 
 #### Manual
-- [x] 3.2 `/login` renders as centered dark card with styled blue button
-- [x] 3.3 Rejection screen renders correctly with bordered "Sign Out" button
-- [x] 3.4 No inline `style={{}}` remain in `login.tsx` or `RejectionScreen.tsx`
+- [x] 3.2 `/login` renders as centered dark card with styled blue button — c2607ef
+- [x] 3.3 Rejection screen renders correctly with bordered "Sign Out" button — c2607ef
+- [x] 3.4 No inline `style={{}}` remain in `login.tsx` or `RejectionScreen.tsx` — c2607ef
 
 ### Phase 4: Component Extraction + Card Redesign
 
 #### Automated
-- [ ] 4.1 `npm run typecheck` passes — all new component files type-check
-- [ ] 4.2 `npm run build` succeeds
+- [x] 4.1 `npm run typecheck` passes — all new component files type-check
+- [x] 4.2 `npm run build` succeeds
 
 #### Manual
-- [ ] 4.3 Submission photos display at full-width aspect-video ratio
-- [ ] 4.4 Grid is 3 cols desktop / 2 cols tablet / 1 col mobile
-- [ ] 4.5 "↩ N follow-ups" badge appears and accordion works
-- [ ] 4.6 Character counter turns accent-dim color at threshold
-- [ ] 4.7 No `w-16 h-16` thumbnails remain anywhere
+- [x] 4.3 Submission photos display at full-width aspect-video ratio
+- [x] 4.4 Grid is 3 cols desktop / 2 cols tablet / 1 col mobile
+- [x] 4.5 "↩ N follow-ups" badge appears and accordion works
+- [x] 4.6 Character counter turns accent-dim color at threshold
+- [x] 4.7 No `w-16 h-16` thumbnails remain anywhere
 
 ### Phase 5: Route Cleanup
 
