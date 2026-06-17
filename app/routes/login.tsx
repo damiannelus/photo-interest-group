@@ -1,4 +1,4 @@
-import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
+import { GoogleAuthProvider, getRedirectResult, signInWithRedirect, signOut } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import RejectionScreen from "~/components/RejectionScreen";
@@ -13,7 +13,21 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    setRejected(false);
+    getRedirectResult(auth).then((result) => {
+      if (!result) return;
+      const email = result.user.email?.toLowerCase() ?? "";
+      if (allowedEmails.includes(email)) {
+        navigate("/");
+      } else {
+        signOut(auth);
+        setRejected(true);
+      }
+    }).catch(() => {
+      setError("Sign-in failed. Please try again.");
+    });
+  }, [navigate]);
+
+  useEffect(() => {
     if (!loading && user) {
       if (allowedEmails.includes(user.email?.toLowerCase() ?? "")) {
         navigate("/");
@@ -24,31 +38,12 @@ export default function LoginPage() {
   }, [user, loading, navigate]);
 
   if (rejected) return <RejectionScreen />;
+  if (loading) return <div>Loading…</div>;
 
   async function handleSignIn() {
     setError(null);
-    try {
-      const result = await signInWithPopup(auth, new GoogleAuthProvider());
-      const email = result.user.email?.toLowerCase() ?? "";
-      if (allowedEmails.includes(email)) {
-        navigate("/");
-      } else {
-        await signOut(auth);
-        setRejected(true);
-      }
-    } catch (err: unknown) {
-      const code = (err as { code?: string }).code;
-      if (code === "auth/popup-closed-by-user" || code === "auth/cancelled-popup-request") {
-        // user dismissed — no message needed
-      } else if (code === "auth/popup-blocked") {
-        setError("Your browser blocked the sign-in popup. Please allow popups for this site and try again.");
-      } else {
-        setError("Sign-in failed. Please try again.");
-      }
-    }
+    await signInWithRedirect(auth, new GoogleAuthProvider());
   }
-
-  if (loading) return <div>Loading…</div>;
 
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", paddingTop: "4rem", gap: "1rem" }}>
