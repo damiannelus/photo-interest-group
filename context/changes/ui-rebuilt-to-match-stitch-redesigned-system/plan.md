@@ -427,11 +427,11 @@ Slim the route files down to imports + page-level layout. Restyle the `challenge
 ### Phase 5: Route Cleanup
 
 #### Automated
-- [x] 5.1 `npm run typecheck` passes
-- [x] 5.2 `npm run build` succeeds — no dead import warnings
-- [x] 5.3 `grep -r "welcome" app/` returns no matches
+- [x] 5.1 `npm run typecheck` passes — 0223683
+- [x] 5.2 `npm run build` succeeds — no dead import warnings — 0223683
+- [x] 5.3 `grep -r "welcome" app/` returns no matches — 0223683
 
 #### Manual
-- [x] 5.4 Full MVP flow works end-to-end (sign in → submit → follow-up → comment)
-- [x] 5.5 `challenges.tsx` is under 80 lines
-- [x] 5.6 No `bg-blue-600`, `dark:`, or inline `style={{` strings remain in `app/`
+- [x] 5.4 Full MVP flow works end-to-end (sign in → submit → follow-up → comment) — 0223683
+- [x] 5.5 `challenges.tsx` is under 80 lines — 0223683
+- [x] 5.6 No `bg-blue-600`, `dark:`, or inline `style={{` strings remain in `app/` — 0223683
