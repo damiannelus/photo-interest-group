@@ -1,15 +1,34 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif,
+  --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Code", "Source Code Pro",
+    Menlo, Consolas, "DejaVu Sans Mono", monospace;
+
+  --color-bg-base:       #11131b;
+  --color-bg-surface:    #1d1f27;
+  --color-bg-elevated:   #282a32;
+  --color-bg-sidebar:    #191b23;
+  --color-text-primary:  #e1e2ed;
+  --color-text-secondary:#c3c6d7;
+  --color-text-faint:    #8d90a0;
+  --color-accent:        #2563eb;
+  --color-accent-dim:    #b4c5ff;
+  --color-border:        #434655;
+  --color-border-strong: #8d90a0;
+  --color-error:         #ffb4ab;
+  --color-error-bg:      #93000a;
+  --color-success:       #b4c5ff;
+
+  --radius-card:  1rem;
+  --radius-input: 0.5rem;
+  --radius-badge: 9999px;
 }
 
 html,
 body {
-  @apply bg-white dark:bg-gray-950;
-
-  @media (prefers-color-scheme: dark) {
-    color-scheme: dark;
-  }
+  background-color: var(--color-bg-base);
+  color: var(--color-text-primary);
+  color-scheme: dark;
 }
