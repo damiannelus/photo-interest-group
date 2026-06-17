@@ -1,7 +1,7 @@
 ---
 id: 2026-06-17-ci-quality-gate
 title: CI Quality Gate
-status: implementing
+status: implemented
 created: 2026-06-17
 updated: 2026-06-17
 ---

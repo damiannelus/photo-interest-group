@@ -204,12 +204,12 @@ No env vars on these steps — all VITE_* secrets remain on the `npm run build` 
 
 #### Automated
 
-- [x] 2.1 `npm test` exits 0 locally
-- [x] 2.2 `npm run test:rules:emulator` exits 0 locally with demo-project flag
-- [x] 2.3 Both workflow YAML files have the three new steps after typecheck, before build
+- [x] 2.1 `npm test` exits 0 locally — b81a32b
+- [x] 2.2 `npm run test:rules:emulator` exits 0 locally with demo-project flag — b81a32b
+- [x] 2.3 Both workflow YAML files have the three new steps after typecheck, before build — b81a32b
 
 #### Manual
 
-- [x] 2.4 Real CI run shows correct step sequence in GitHub Actions log
-- [x] 2.5 Emulator test step shows ≥ 20 tests passing in CI log
-- [x] 2.6 `test-plan.md` Phase 3 row reads `complete`
+- [x] 2.4 Real CI run shows correct step sequence in GitHub Actions log — b81a32b
+- [x] 2.5 Emulator test step shows ≥ 20 tests passing in CI log — b81a32b
+- [x] 2.6 `test-plan.md` Phase 3 row reads `complete` — b81a32b
