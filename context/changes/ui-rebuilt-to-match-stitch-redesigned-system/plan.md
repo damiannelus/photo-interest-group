@@ -380,26 +380,26 @@ Slim the route files down to imports + page-level layout. Restyle the `challenge
 ### Phase 1: Design Tokens + Fonts
 
 #### Automated
-- [x] 1.1 `npm run typecheck` passes after `app.css` + `root.tsx` changes
-- [x] 1.2 `npm run build` succeeds — Tailwind v4 compiles all new token classes
+- [x] 1.1 `npm run typecheck` passes after `app.css` + `root.tsx` changes — ecab9bc
+- [x] 1.2 `npm run build` succeeds — Tailwind v4 compiles all new token classes — ecab9bc
 
 #### Manual
-- [x] 1.3 Body background is `#11131b` (dark), not white
-- [x] 1.4 Font renders as Geist in DevTools
-- [x] 1.5 App remains dark when system preference is light
+- [x] 1.3 Body background is `#11131b` (dark), not white — ecab9bc
+- [x] 1.4 Font renders as Geist in DevTools — ecab9bc
+- [x] 1.5 App remains dark when system preference is light — ecab9bc
 
 ### Phase 2: App Shell — Sidebar Nav
 
 #### Automated
-- [ ] 2.1 `npm run typecheck` passes
-- [ ] 2.2 `npm run build` succeeds
+- [x] 2.1 `npm run typecheck` passes
+- [x] 2.2 `npm run build` succeeds
 
 #### Manual
-- [ ] 2.3 256px sidebar visible on desktop (≥ 1024px)
-- [ ] 2.4 Sidebar collapses to 48px icon strip at < 1024px
-- [ ] 2.5 Active nav item highlighted in `#b4c5ff`
-- [ ] 2.6 Sign-out via sidebar redirects to `/login`
-- [ ] 2.7 Loading state is styled (no bare white div)
+- [x] 2.3 256px sidebar visible on desktop (≥ 1024px)
+- [x] 2.4 Sidebar collapses to 48px icon strip at < 1024px
+- [x] 2.5 Active nav item highlighted in `#b4c5ff`
+- [x] 2.6 Sign-out via sidebar redirects to `/login`
+- [x] 2.7 Loading state is styled (no bare white div)
 
 ### Phase 3: Auth Screens + Root Loading States
 
