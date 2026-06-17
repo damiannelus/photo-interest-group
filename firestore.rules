@@ -22,10 +22,12 @@ service cloud.firestore {
       allow read: if isWhitelisted();
       allow create: if isWhitelisted() &&
                        request.auth.uid == request.resource.data.authorUid &&
+                       request.resource.data.reflection.matches('.*\\S.*') &&
                        request.resource.data.reflection.size() >= 50;
       allow update: if isWhitelisted() &&
                       request.auth.uid == resource.data.authorUid &&
                       request.resource.data.authorUid == resource.data.authorUid &&
+                      request.resource.data.reflection.matches('.*\\S.*') &&
                       request.resource.data.reflection.size() >= 50;
       allow delete: if isWhitelisted() &&
                       request.auth.uid == resource.data.authorUid;

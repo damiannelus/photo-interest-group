@@ -67,7 +67,7 @@ Status vocabulary (parser literals): `not started` → `change opened` → `rese
 | # | Phase name | Goal | Risks covered | Test types | Status | Change folder |
 |---|---|---|---|---|---|---|
 | 1 | Unit layer — pure logic | Bootstrap Vitest; prove `buildSubmissionTree`, gate predicates (`canPublish`/`canPost`/`canFollowUp`), whitelist normalization, and listener cleanup contract are correct | R3, R6, R7 | Vitest unit tests | complete | context/changes/testing-unit-layer/ |
-| 2 | Firestore rules layer | Automate security rules verification: whitelist enforcement, reflection gate (including whitespace bypass), ownership rules, non-member rejection on all collection paths | R1, R2, R4, R5 | Firebase emulator + `@firebase/rules-unit-testing` | not started | — |
+| 2 | Firestore rules layer | Automate security rules verification: whitelist enforcement, reflection gate (including whitespace bypass), ownership rules, non-member rejection on all collection paths | R1, R2, R4, R5 | Firebase emulator + `@firebase/rules-unit-testing` | implementing | context/changes/2026-06-16-firestore-rules-phase2/ |
 | 3 | CI quality gate | Run unit + rules tests in GitHub Actions on every push; make typecheck a required PR check | All | GitHub Actions CI | not started | — |
 
 ---
@@ -109,12 +109,13 @@ Re-run `/10x-test-plan --refresh` when:
 - Gate predicate correctness (trim-consistency): TBD — unit tests of `canPublish`/`canPost`/`canFollowUp` with whitespace-only inputs at the boundary
 - Listener cleanup contract: TBD — unit test with mocked `onSnapshot` unsubscribe spy; assert called on unmount and on toggle-close
 
-### Phase 2 patterns (TBD — see §3 Phase 2)
+### Phase 2 patterns (see §3 Phase 2)
 
-- Reflection gate (whitespace bypass): TBD — emulator rules test; write with `reflection: " ".repeat(50)` → expect denied; write with 50 non-whitespace chars → expect allowed
-- Whitelist enforcement: TBD — emulator rules test; non-member authenticated token → expect denied on all collection reads/writes
-- Ownership rules: TBD — emulator rules test; member tries to update another member's submission → expect denied
-- Follow-up `parent_submission_id` integrity: TBD — emulator integration test; write a follow-up, read back, assert field value equals parent document ID
+- Reflection gate (whitespace bypass): `tests/rules/firestore.rules.test.ts` — 4 tests (create/update × deny/allow); rule fix: `reflection.matches('.*\\S.*') && reflection.size() >= 50` in `firestore.rules`; `" ".repeat(50)` → denied, `"a".repeat(50)` → allowed
+- Whitelist enforcement: same file — non-member and unauthenticated contexts denied on read + write for challenges, submissions, comments; member allowed on all paths
+- Ownership rules: same file — Bob cannot update or delete Alice's submission; Alice can delete her own
+- Follow-up `parent_submission_id` integrity: same file — write follow-up, read back with rules-disabled context, assert field equals parent doc ID
+- Run: `npm run test:rules:emulator` (starts Firestore emulator, runs tests, shuts down); or start emulator manually then `npm run test:rules`
 
 ### Phase 3 patterns (TBD — see §3 Phase 3)
 
