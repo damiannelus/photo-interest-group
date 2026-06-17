@@ -10,5 +10,7 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     globals: true,
+    exclude: ["tests/rules/**", "**/node_modules/**"],
+    environmentMatchGlobs: [["tests/rules/**", "node"]],
   },
 });
