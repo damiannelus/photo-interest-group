@@ -67,7 +67,7 @@ Status vocabulary (parser literals): `not started` → `change opened` → `rese
 | # | Phase name | Goal | Risks covered | Test types | Status | Change folder |
 |---|---|---|---|---|---|---|
 | 1 | Unit layer — pure logic | Bootstrap Vitest; prove `buildSubmissionTree`, gate predicates (`canPublish`/`canPost`/`canFollowUp`), whitelist normalization, and listener cleanup contract are correct | R3, R6, R7 | Vitest unit tests | complete | context/changes/testing-unit-layer/ |
-| 2 | Firestore rules layer | Automate security rules verification: whitelist enforcement, reflection gate (including whitespace bypass), ownership rules, non-member rejection on all collection paths | R1, R2, R4, R5 | Firebase emulator + `@firebase/rules-unit-testing` | implementing | context/changes/2026-06-16-firestore-rules-phase2/ |
+| 2 | Firestore rules layer | Automate security rules verification: whitelist enforcement, reflection gate (including whitespace bypass), ownership rules, non-member rejection on all collection paths | R1, R2, R4, R5 | Firebase emulator + `@firebase/rules-unit-testing` | complete | context/changes/2026-06-16-firestore-rules-phase2/ |
 | 3 | CI quality gate | Run unit + rules tests in GitHub Actions on every push; make typecheck a required PR check | All | GitHub Actions CI | not started | — |
 
 ---
