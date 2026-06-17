@@ -23,7 +23,13 @@ export default function LoginPage() {
   }, [user, loading, navigate]);
 
   if (rejected) return <RejectionScreen />;
-  if (loading) return <div>Loading…</div>;
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-bg-base flex items-center justify-center">
+        <span className="text-text-secondary text-sm">Loading…</span>
+      </div>
+    );
+  }
 
   async function handleSignIn() {
     setError(null);
@@ -40,10 +46,19 @@ export default function LoginPage() {
   }
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", paddingTop: "4rem", gap: "1rem" }}>
-      <h1>Photo Interest Group</h1>
-      <button onClick={handleSignIn}>Sign in with Google</button>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+    <div className="min-h-screen bg-bg-base flex items-center justify-center">
+      <div className="bg-bg-surface border border-border rounded-card p-10 w-full max-w-sm flex flex-col items-center gap-6">
+        <h1 className="text-lg font-semibold text-text-primary tracking-tight">
+          Photo Interest Group
+        </h1>
+        <button
+          onClick={handleSignIn}
+          className="bg-accent text-white text-sm font-medium px-5 py-2.5 rounded-input hover:opacity-90 transition-opacity w-full"
+        >
+          Sign in with Google
+        </button>
+        {error && <p className="text-sm text-error text-center">{error}</p>}
+      </div>
     </div>
   );
 }

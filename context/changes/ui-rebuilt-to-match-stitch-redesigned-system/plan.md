@@ -391,25 +391,25 @@ Slim the route files down to imports + page-level layout. Restyle the `challenge
 ### Phase 2: App Shell — Sidebar Nav
 
 #### Automated
-- [x] 2.1 `npm run typecheck` passes
-- [x] 2.2 `npm run build` succeeds
+- [x] 2.1 `npm run typecheck` passes — 3a2e81f
+- [x] 2.2 `npm run build` succeeds — 3a2e81f
 
 #### Manual
-- [x] 2.3 256px sidebar visible on desktop (≥ 1024px)
-- [x] 2.4 Sidebar collapses to 48px icon strip at < 1024px
-- [x] 2.5 Active nav item highlighted in `#b4c5ff`
-- [x] 2.6 Sign-out via sidebar redirects to `/login`
-- [x] 2.7 Loading state is styled (no bare white div)
+- [x] 2.3 256px sidebar visible on desktop (≥ 1024px) — 3a2e81f
+- [x] 2.4 Sidebar collapses to 48px icon strip at < 1024px — 3a2e81f
+- [x] 2.5 Active nav item highlighted in `#b4c5ff` — 3a2e81f
+- [x] 2.6 Sign-out via sidebar redirects to `/login` — 3a2e81f
+- [x] 2.7 Loading state is styled (no bare white div) — 3a2e81f
 
 ### Phase 3: Auth Screens + Root Loading States
 
 #### Automated
-- [ ] 3.1 `npm run typecheck` passes
+- [x] 3.1 `npm run typecheck` passes
 
 #### Manual
-- [ ] 3.2 `/login` renders as centered dark card with styled blue button
-- [ ] 3.3 Rejection screen renders correctly with bordered "Sign Out" button
-- [ ] 3.4 No inline `style={{}}` remain in `login.tsx` or `RejectionScreen.tsx`
+- [x] 3.2 `/login` renders as centered dark card with styled blue button
+- [x] 3.3 Rejection screen renders correctly with bordered "Sign Out" button
+- [x] 3.4 No inline `style={{}}` remain in `login.tsx` or `RejectionScreen.tsx`
 
 ### Phase 4: Component Extraction + Card Redesign
 

@@ -56,7 +56,11 @@ export default function App() {
 }
 
 export function HydrateFallback() {
-  return <div>Loading…</div>;
+  return (
+    <div className="min-h-screen bg-bg-base flex items-center justify-center">
+      <span className="text-text-secondary text-sm">Loading…</span>
+    </div>
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
@@ -76,7 +80,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   }
 
   return (
-    <main className="pt-16 p-4 container mx-auto">
+    <main className="bg-bg-base text-text-primary pt-16 p-4 container mx-auto">
       <h1>{message}</h1>
       <p>{details}</p>
       {stack && (
