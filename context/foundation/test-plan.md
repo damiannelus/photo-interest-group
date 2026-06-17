@@ -115,7 +115,7 @@ Re-run `/10x-test-plan --refresh` when:
 - Whitelist enforcement: same file — non-member and unauthenticated contexts denied on read + write for challenges, submissions, comments; member allowed on all paths
 - Ownership rules: same file — Bob cannot update or delete Alice's submission; Alice can delete her own
 - Follow-up `parent_submission_id` integrity: same file — write follow-up, read back with rules-disabled context, assert field equals parent doc ID
-- Run: `npm run test:rules:emulator` (starts Firestore emulator, runs tests, shuts down); or start emulator manually then `npm run test:rules`
+- Run: `npm run test:rules:emulator` (starts Firestore emulator, runs tests, shuts down); or start emulator manually then `npm run test:rules:watch` (watch mode, requires running emulator)
 
 ### Phase 3 patterns (TBD — see §3 Phase 3)
 
