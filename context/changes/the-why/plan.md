@@ -157,7 +157,7 @@ Add an info-circle icon and a "The Why" nav link to the top of the sidebar nav s
 
 #### Automated
 
-- [x] 2.1 Type check passes: `npm run typecheck`
+- [x] 2.1 Type check passes: `npm run typecheck` — bbeea33
 
 #### Manual
 
