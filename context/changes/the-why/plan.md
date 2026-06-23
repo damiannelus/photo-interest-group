@@ -143,25 +143,25 @@ Add an info-circle icon and a "The Why" nav link to the top of the sidebar nav s
 
 #### Automated
 
-- [x] 1.1 Type check passes: `npm run typecheck`
-- [x] 1.2 Build passes: `npm run build`
+- [x] 1.1 Type check passes: `npm run typecheck` — 10a4e23
+- [x] 1.2 Build passes: `npm run build` — 10a4e23
 
 #### Manual
 
-- [ ] 1.3 `/why` renders without login
-- [ ] 1.4 Polish text is visible (three paragraphs)
-- [ ] 1.5 "← Back" navigates to `/`
-- [ ] 1.6 Design tokens are consistent with the rest of the app
+- [x] 1.3 `/why` renders without login
+- [x] 1.4 Polish text is visible (three paragraphs)
+- [x] 1.5 "← Back" navigates to `/`
+- [x] 1.6 Design tokens are consistent with the rest of the app
 
 ### Phase 2: Sidebar entry
 
 #### Automated
 
-- [ ] 2.1 Type check passes: `npm run typecheck`
+- [x] 2.1 Type check passes: `npm run typecheck`
 
 #### Manual
 
-- [ ] 2.2 Info icon appears above Feed in sidebar
-- [ ] 2.3 Clicking navigates to `/why` with active highlight
-- [ ] 2.4 Mobile (icon-only) and desktop (icon + label) both render correctly
-- [ ] 2.5 Feed and New Challenge links are unaffected
+- [x] 2.2 Info icon appears above Feed in sidebar
+- [x] 2.3 Clicking navigates to `/why` with active highlight
+- [x] 2.4 Mobile (icon-only) and desktop (icon + label) both render correctly
+- [x] 2.5 Feed and New Challenge links are unaffected
