@@ -1,7 +1,7 @@
 ---
 change_id: post-hog-integration
 title: PostHog integration
-status: implementing
+status: implemented
 created: 2026-06-23
 updated: 2026-06-23
 archived_at: null
