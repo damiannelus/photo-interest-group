@@ -1,6 +1,7 @@
 import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import { usePostHog } from "posthog-js/react";
 import RejectionScreen from "~/components/RejectionScreen";
 import { useAuth } from "~/context/auth";
 import { auth } from "~/firebase";
@@ -9,6 +10,7 @@ import { allowedEmails } from "~/lib/allowedEmails";
 export default function LoginPage() {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
+  const posthog = usePostHog();
   const [rejected, setRejected] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -37,8 +39,11 @@ export default function LoginPage() {
       const result = await signInWithPopup(auth, new GoogleAuthProvider());
       const email = result.user.email?.toLowerCase() ?? "";
       if (!allowedEmails.includes(email)) {
+        posthog?.capture("whitelist_rejected", { email: result.user.email });
         await signOut(auth);
         setRejected(true);
+      } else {
+        posthog?.capture("user_signed_in");
       }
     } catch {
       setError("Sign-in failed. Please try again.");

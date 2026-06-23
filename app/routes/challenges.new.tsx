@@ -1,6 +1,7 @@
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
+import { usePostHog } from "posthog-js/react";
 import { useAuth } from "~/context/auth";
 import { db } from "~/firebase";
 
@@ -10,6 +11,7 @@ const inputClass =
 export default function NewChallengePage() {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const posthog = usePostHog();
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -31,6 +33,7 @@ export default function NewChallengePage() {
         createdAt: serverTimestamp(),
         status: "active",
       });
+      posthog?.capture("challenge_created", { has_description: description.trim().length > 0 });
       navigate("/");
     } catch (err) {
       console.error("Challenge creation failed:", err);

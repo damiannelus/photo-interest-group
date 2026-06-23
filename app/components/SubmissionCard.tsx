@@ -1,5 +1,6 @@
 import { addDoc, collection, deleteDoc, doc, serverTimestamp, updateDoc } from "firebase/firestore";
 import { useEffect, useRef, useState } from "react";
+import { usePostHog } from "posthog-js/react";
 import { useAuth } from "~/context/auth";
 import { db } from "~/firebase";
 import { useComments } from "~/hooks/useComments";
@@ -26,6 +27,7 @@ interface Props {
 
 export default function SubmissionCard({ submission, childSubmissions }: Props) {
   const { user } = useAuth();
+  const posthog = usePostHog();
   const mountedRef = useRef(true);
   useEffect(() => {
     mountedRef.current = true;
@@ -69,6 +71,7 @@ export default function SubmissionCard({ submission, childSubmissions }: Props) 
         authorEmail: user.email ?? "",
         createdAt: serverTimestamp(),
       });
+      posthog?.capture("comment_posted", { submission_id: submission.id, text_length: commentText.trim().length });
       if (!mountedRef.current) return;
       setCommentText("");
       setSubmitting(false);
@@ -83,6 +86,7 @@ export default function SubmissionCard({ submission, childSubmissions }: Props) 
   async function handleDeleteComment(commentId: string) {
     try {
       await deleteDoc(doc(db, "submissions", submission.id, "comments", commentId));
+      posthog?.capture("comment_deleted", { submission_id: submission.id });
     } catch (err) {
       console.error("Comment delete failed:", err);
       if (!mountedRef.current) return;
@@ -114,6 +118,11 @@ export default function SubmissionCard({ submission, childSubmissions }: Props) 
         createdAt: serverTimestamp(),
         parent_submission_id: submission.id,
       });
+      posthog?.capture("follow_up_published", {
+        challenge_id: submission.challengeId,
+        parent_submission_id: submission.id,
+        reflection_length: fuReflection.trim().length,
+      });
       if (!mountedRef.current) return;
       setFuPhotoUrl("");
       setFuReflection("");
@@ -133,6 +142,7 @@ export default function SubmissionCard({ submission, childSubmissions }: Props) 
     try {
       setDeleteError(null);
       await deleteDoc(doc(db, "submissions", submission.id));
+      posthog?.capture("submission_deleted", { challenge_id: submission.challengeId });
     } catch (err) {
       console.error("Submission delete failed:", err);
       if (!mountedRef.current) return;
@@ -150,6 +160,7 @@ export default function SubmissionCard({ submission, childSubmissions }: Props) 
       await updateDoc(doc(db, "submissions", submission.id), {
         reflection: editReflection.trim(),
       });
+      posthog?.capture("reflection_edited", { new_reflection_length: editReflection.trim().length });
       if (!mountedRef.current) return;
       setEditOpen(false);
       setEditSubmitting(false);
@@ -200,7 +211,12 @@ export default function SubmissionCard({ submission, childSubmissions }: Props) 
           {user && (
             <button
               type="button"
-              onClick={() => { setFollowUpOpen((v) => !v); setCommentOpen(false); }}
+              onClick={() => {
+                const opening = !followUpOpen;
+                setFollowUpOpen(opening);
+                setCommentOpen(false);
+                if (opening) posthog?.capture("follow_up_form_opened", { parent_submission_id: submission.id, challenge_id: submission.challengeId });
+              }}
               className="text-xs text-accent-dim hover:text-accent transition-colors"
             >
               {followUpOpen ? "Cancel Follow-Up" : "Follow-Up"}

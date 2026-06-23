@@ -1,14 +1,18 @@
 import { signOut } from "firebase/auth";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { usePostHog } from "posthog-js/react";
 import { auth } from "~/firebase";
 
 export default function RejectionScreen() {
   const navigate = useNavigate();
+  const posthog = usePostHog();
   const [error, setError] = useState<string | null>(null);
 
   async function handleSignOut() {
     try {
+      posthog?.capture("user_signed_out");
+      posthog?.reset();
       await signOut(auth);
       navigate("/login");
     } catch {

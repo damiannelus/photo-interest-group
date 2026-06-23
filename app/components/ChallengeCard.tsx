@@ -1,5 +1,6 @@
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { usePostHog } from "posthog-js/react";
 import SubmissionList from "~/components/SubmissionList";
 import { useAuth } from "~/context/auth";
 import { db } from "~/firebase";
@@ -20,6 +21,7 @@ interface Props {
 
 export default function ChallengeCard({ challenge }: Props) {
   const { user } = useAuth();
+  const posthog = usePostHog();
   const mountedRef = useRef(true);
   useEffect(() => {
     mountedRef.current = true;
@@ -65,6 +67,10 @@ export default function ChallengeCard({ challenge }: Props) {
         createdAt: serverTimestamp(),
         parent_submission_id: null,
       });
+      posthog?.capture("submission_published", {
+        challenge_id: challenge.id,
+        reflection_length: reflection.trim().length,
+      });
       if (!mountedRef.current) return;
       setPhotoUrl("");
       setReflection("");
@@ -87,7 +93,11 @@ export default function ChallengeCard({ challenge }: Props) {
         </h2>
         <button
           type="button"
-          onClick={() => setFormOpen((v) => !v)}
+          onClick={() => {
+            const opening = !formOpen;
+            setFormOpen(opening);
+            if (opening) posthog?.capture("submission_form_opened", { challenge_id: challenge.id });
+          }}
           className={
             formOpen
               ? "text-sm text-text-secondary hover:text-text-primary transition-colors"

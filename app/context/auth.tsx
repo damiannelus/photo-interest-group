@@ -1,5 +1,6 @@
 import { onAuthStateChanged, type User } from "firebase/auth";
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import posthog from "posthog-js";
 import { auth } from "~/firebase";
 
 interface AuthContextValue {
@@ -17,6 +18,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       setUser(firebaseUser);
       setLoading(false);
+      if (firebaseUser) {
+        posthog.identify(firebaseUser.uid, { email: firebaseUser.email ?? undefined });
+      }
     });
     return unsubscribe;
   }, []);

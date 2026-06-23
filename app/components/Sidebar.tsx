@@ -1,5 +1,6 @@
 import { signOut } from "firebase/auth";
 import { NavLink, useNavigate } from "react-router";
+import { usePostHog } from "posthog-js/react";
 import { useAuth } from "~/context/auth";
 import { auth } from "~/firebase";
 
@@ -69,8 +70,11 @@ function InfoIcon() {
 export default function Sidebar() {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const posthog = usePostHog();
 
   async function handleSignOut() {
+    posthog?.capture("user_signed_out");
+    posthog?.reset();
     await signOut(auth);
     navigate("/login");
   }

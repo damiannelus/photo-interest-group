@@ -6,10 +6,34 @@ import {
   Scripts,
   ScrollRestoration,
 } from "react-router";
+import posthog from "posthog-js";
+import { PostHogProvider } from "posthog-js/react";
 
 import type { Route } from "./+types/root";
 import "./app.css";
 import { AuthProvider } from "~/context/auth";
+
+// Module-level init: runs once per page load, not inside a React effect.
+// This ensures the config is always applied even after HMR swaps.
+if (typeof window !== "undefined") {
+  posthog.init(import.meta.env.VITE_PUBLIC_POSTHOG_KEY, {
+    api_host: import.meta.env.VITE_PUBLIC_POSTHOG_HOST,
+    autocapture: true,
+    capture_pageview: "history_change",
+    capture_pageleave: true,
+    disable_session_recording: false,
+    advanced_disable_feature_flags: true,
+    opt_out_capturing_by_default: true,
+    loaded: (ph) => {
+      if (localStorage.getItem("ph_consent") === "accepted") {
+        ph.opt_in_capturing();
+      }
+    },
+    before_send: (event) => {
+      return localStorage.getItem("ph_consent") === "accepted" ? event : null;
+    },
+  });
+}
 
 export const links: Route.LinksFunction = () => [
   { rel: "icon", type: "image/png", href: "/favicon.png" },
@@ -49,9 +73,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <Outlet />
-    </AuthProvider>
+    <PostHogProvider client={posthog}>
+      <AuthProvider>
+        <Outlet />
+      </AuthProvider>
+    </PostHogProvider>
   );
 }
 

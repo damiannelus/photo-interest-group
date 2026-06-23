@@ -1,4 +1,5 @@
 import { Navigate, Outlet } from "react-router";
+import CookieConsent from "~/components/CookieConsent";
 import RejectionScreen from "~/components/RejectionScreen";
 import Sidebar from "~/components/Sidebar";
 import { useAuth } from "~/context/auth";
@@ -23,6 +24,7 @@ export default function ProtectedLayout() {
       <main className="flex-1 min-w-0">
         <Outlet />
       </main>
+      <CookieConsent />
     </div>
   );
 }
