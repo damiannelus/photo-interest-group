@@ -11,6 +11,7 @@ import { PostHogProvider } from "posthog-js/react";
 
 import type { Route } from "./+types/root";
 import "./app.css";
+
 import { AuthProvider } from "~/context/auth";
 
 // Module-level init: runs once per page load, not inside a React effect.
