@@ -374,9 +374,9 @@ With cookie consent accepted and DevTools → Network filtered to `eu.i.posthog.
 
 #### Automated
 
-- [x] 1.1 `npm run typecheck` passes with no PostHog-related errors
-- [x] 1.2 `npm run build` completes without error
-- [x] 1.3 `VITE_PUBLIC_POSTHOG_KEY` and `VITE_PUBLIC_POSTHOG_HOST` present in `.env.example`
+- [x] 1.1 `npm run typecheck` passes with no PostHog-related errors — 4502b49
+- [x] 1.2 `npm run build` completes without error — 4502b49
+- [x] 1.3 `VITE_PUBLIC_POSTHOG_KEY` and `VITE_PUBLIC_POSTHOG_HOST` present in `.env.example` — 4502b49
 
 #### Manual
 
@@ -386,7 +386,7 @@ With cookie consent accepted and DevTools → Network filtered to `eu.i.posthog.
 
 #### Automated
 
-- [x] 2.1 `npm run typecheck` passes
+- [x] 2.1 `npm run typecheck` passes — 4502b49
 
 #### Manual
 
@@ -397,8 +397,8 @@ With cookie consent accepted and DevTools → Network filtered to `eu.i.posthog.
 
 #### Automated
 
-- [x] 3.1 `npm run typecheck` passes
-- [x] 3.2 `npm run build` passes
+- [x] 3.1 `npm run typecheck` passes — 4502b49
+- [x] 3.2 `npm run build` passes — 4502b49
 
 #### Manual
 
@@ -412,8 +412,8 @@ With cookie consent accepted and DevTools → Network filtered to `eu.i.posthog.
 
 #### Automated
 
-- [x] 4.1 `npm run typecheck` passes
-- [x] 4.2 `npm run build` passes
+- [x] 4.1 `npm run typecheck` passes — 4502b49
+- [x] 4.2 `npm run build` passes — 4502b49
 
 #### Manual
 
