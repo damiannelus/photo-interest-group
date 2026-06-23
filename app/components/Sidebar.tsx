@@ -74,7 +74,6 @@ export default function Sidebar() {
 
   async function handleSignOut() {
     posthog?.capture("user_signed_out");
-    posthog?.reset();
     await signOut(auth);
     navigate("/login");
   }

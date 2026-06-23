@@ -12,7 +12,6 @@ export default function RejectionScreen() {
   async function handleSignOut() {
     try {
       posthog?.capture("user_signed_out");
-      posthog?.reset();
       await signOut(auth);
       navigate("/login");
     } catch {

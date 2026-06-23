@@ -380,7 +380,7 @@ With cookie consent accepted and DevTools → Network filtered to `eu.i.posthog.
 
 #### Manual
 
-- [ ] 1.4 No requests to `eu.i.posthog.com` before consent accepted (verify once Phase 3 is done)
+- [x] 1.4 No requests to `eu.i.posthog.com` before consent accepted (verify once Phase 3 is done)
 
 ### Phase 2: Identity Wiring
 
@@ -390,8 +390,8 @@ With cookie consent accepted and DevTools → Network filtered to `eu.i.posthog.
 
 #### Manual
 
-- [ ] 2.2 Signing in populates a person in PostHog with correct `uid` and `email`
-- [ ] 2.3 Signing out ends the session (no further identity-linked events)
+- [x] 2.2 Signing in populates a person in PostHog with correct `uid` and `email`
+- [x] 2.3 Signing out ends the session (no further identity-linked events)
 
 ### Phase 3: Cookie Consent Component
 
@@ -402,11 +402,11 @@ With cookie consent accepted and DevTools → Network filtered to `eu.i.posthog.
 
 #### Manual
 
-- [ ] 3.3 Banner appears on first load (localStorage cleared)
-- [ ] 3.4 Accept: bar disappears, PostHog requests appear in Network tab
-- [ ] 3.5 Reload after accept: bar does not reappear
-- [ ] 3.6 Decline: bar disappears, no PostHog requests
-- [ ] 3.7 Reload after decline: bar does not reappear
+- [x] 3.3 Banner appears on first load (localStorage cleared)
+- [x] 3.4 Accept: bar disappears, PostHog requests appear in Network tab
+- [x] 3.5 Reload after accept: bar does not reappear
+- [x] 3.6 Decline: bar disappears, no PostHog requests
+- [x] 3.7 Reload after decline: bar does not reappear
 
 ### Phase 4: Event Instrumentation
 
@@ -417,15 +417,15 @@ With cookie consent accepted and DevTools → Network filtered to `eu.i.posthog.
 
 #### Manual
 
-- [ ] 4.3 `user_signed_in` in PostHog Live Events on login
-- [ ] 4.4 `challenge_created` with `has_description` property
-- [ ] 4.5 `submission_form_opened` fires once on open, not on close
-- [ ] 4.6 `submission_published` with `challenge_id` and `reflection_length`
-- [ ] 4.7 `comment_posted` with `submission_id` and `text_length`
-- [ ] 4.8 `comment_deleted` with `submission_id`
-- [ ] 4.9 `follow_up_form_opened` fires once on open, not on close
-- [ ] 4.10 `follow_up_published` with `parent_submission_id` and `reflection_length`
-- [ ] 4.11 `reflection_edited` with `new_reflection_length`
-- [ ] 4.12 `submission_deleted` with `challenge_id`
-- [ ] 4.13 `user_signed_out` fires before identity is cleared; no attributed events after
-- [ ] 4.14 With consent declined: zero events in PostHog Live Events
+- [x] 4.3 `user_signed_in` in PostHog Live Events on login
+- [x] 4.4 `challenge_created` with `has_description` property
+- [x] 4.5 `submission_form_opened` fires once on open, not on close
+- [x] 4.6 `submission_published` with `challenge_id` and `reflection_length`
+- [x] 4.7 `comment_posted` with `submission_id` and `text_length`
+- [x] 4.8 `comment_deleted` with `submission_id`
+- [x] 4.9 `follow_up_form_opened` fires once on open, not on close
+- [x] 4.10 `follow_up_published` with `parent_submission_id` and `reflection_length`
+- [x] 4.11 `reflection_edited` with `new_reflection_length`
+- [x] 4.12 `submission_deleted` with `challenge_id`
+- [x] 4.13 `user_signed_out` fires before identity is cleared; no attributed events after
+- [x] 4.14 With consent declined: zero events in PostHog Live Events
